@@ -26,11 +26,10 @@ private val numbers = listOf(
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
 )
 
-
 private fun toArabicNumeral(number: String) =
-    if (number.length == 1) number.toInt() else arabicNumeralsOfSpelledOutNumbers.getValue(number)
+    if (number.length == 1) number.toInt()
+    else arabicNumeralsOfSpelledOutNumbers.getValue(number)
 
-@Suppress("MagicNumber")
 private val arabicNumeralsOfSpelledOutNumbers = mapOf(
     "zero" to 0,
     "one" to 1,
