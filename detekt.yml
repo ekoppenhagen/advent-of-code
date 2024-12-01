@@ -1,0 +1,146 @@
+# based on the default config for detekt 1.23.7
+
+# https://detekt.dev/docs/rules/comments
+# no rules defined, because we want to avoid comments in the first place
+
+# https://detekt.dev/docs/rules/complexity
+complexity:
+    CognitiveComplexMethod:
+        active: true
+        threshold: 11
+    CyclomaticComplexMethod:
+        threshold: 11
+        ignoreSimpleWhenEntries: true
+        ignoreSingleWhenExpression: true
+    LargeClass:
+        threshold: 301
+    LongMethod:
+        threshold: 31
+    LongParameterList:
+        excludes: [ '**/model/**' ]
+    NestedScopeFunctions:
+        active: true
+
+# https://detekt.dev/docs/rules/coroutines
+# no rules defined, because we don't use coroutines
+
+# https://detekt.dev/docs/rules/empty-blocks
+# no rules defined, because the default config is good enough
+
+# https://detekt.dev/docs/rules/exceptions
+exceptions:
+    NotImplementedDeclaration:
+        active: true
+    ObjectExtendsThrowable:
+        active: true
+
+# https://detekt.dev/docs/rules/formatting
+formatting:
+    AnnotationSpacing:
+        active: false
+    AnnotationOnSeparateLine:
+        active: false
+    ArgumentListWrapping:
+        maxLineLength: 160
+    ContextReceiverMapping:
+        maxLineLength: 160
+    DiscouragedCommentLocation:
+        active: true
+    EnumWrapping:
+        active: true
+    MaximumLineLength:
+        maxLineLength: 160
+    MultiLineIfElse:
+        active: false
+    ParameterListWrapping:
+        maxLineLength: 160
+    PropertyWrapping:
+        maxLineLength: 160
+
+# https://detekt.dev/docs/rules/libraries
+# no rules defined, because we do not use the plugin
+
+# https://detekt.dev/docs/rules/naming/
+naming:
+    BooleanPropertyNaming:
+        active: true
+    LambdaParameterNaming:
+        active: true
+        parameterPattern: '[a-z]+[A-Za-z0-9]{2,}|_'
+    NonBooleanPropertyPrefixedWithIs:
+        active: true
+
+# https://detekt.dev/docs/rules/performance/
+performance:
+    CouldBeSequence:
+        active: true
+    SpreadOperator:
+        active: false
+    UnnecessaryPartOfBinaryExpression:
+        active: true
+
+# https://detekt.dev/docs/rules/potential-bugs/
+potential-bugs:
+    CastNullableToNonNullableType:
+        active: true
+    CastToNullableType:
+        active: true
+    Deprecation:
+        active: true
+    DontDowncastCollectionTypes:
+        active: true
+    MissingPackageDeclaration:
+        active: true
+    UnnecessaryNotNullCheck:
+        active: true
+
+# https://detekt.dev/docs/rules/ruleauthors
+# no rules defined, because we do not use the plugin
+
+# https://detekt.dev/docs/rules/style/
+style:
+    AlsoCouldBeApply:
+        active: true
+    CanBeNonNullable:
+        active: true
+    CollapsibleIfStatements:
+        active: true
+    DoubleNegativeLambda:
+        active: true
+    EqualsOnSignatureLine:
+        active: true
+    ExpressionBodySyntax:
+        active: true
+        includeLineWrapping: false
+    ForbiddenMethodCall:
+        active: true
+    ForbiddenVoid:
+        active: true
+    MaxLineLength:
+        maxLineLength: 160
+    PreferToOverPairSyntax:
+        active: true
+    RedundantExplicitType:
+        active: true
+    RedundantVisibilityModifierRule:
+        active: true
+    SpacingBetweenPackageAndImports:
+        active: true
+    TrailingWhitespace:
+        active: true
+    UnderscoresInNumericLiterals:
+        active: true
+    UnnecessaryBracesAroundTrailingLambda:
+        active: true
+    UnnecessaryLet:
+        active: true
+    UnnecessaryParentheses:
+        active: true
+    UntilInsteadOfRangeTo:
+        active: true
+    UnusedImports:
+        active: true
+    UseEmptyCounterpart:
+        active: true
+    UseSumOfInsteadOfFlatMapSize:
+        active: true
