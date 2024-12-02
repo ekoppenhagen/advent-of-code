@@ -9,7 +9,7 @@ import io.github.ekoppenhagen.aoc.extensions.toPairOfFirstAndLastElement
 // https://adventofcode.com/2023/day/1
 class Day1 : AbstractAocDay(year = 2023, day = 1) {
 
-    override fun solve1(lines: List<String>) =
+    override fun solvePart1(lines: List<String>) =
         getEachCalibrationValue(lines).sum()
 
     private fun getEachCalibrationValue(lines: List<String>) =
@@ -20,7 +20,7 @@ class Day1 : AbstractAocDay(year = 2023, day = 1) {
             .toPairOfFirstAndLastElement()
             .concatenateToNumber() ?: 0
 
-    override fun solve2(lines: List<String>) =
+    override fun solvePart2(lines: List<String>) =
         getEachCalibrationValueWithSpelledOutNumbers(lines).sum()
 
     private fun getEachCalibrationValueWithSpelledOutNumbers(lines: List<String>) =

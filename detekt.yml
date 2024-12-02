@@ -20,6 +20,8 @@ complexity:
     excludes: [ '**/model/**' ]
   NestedScopeFunctions:
     active: true
+  TooManyFunctions:
+    active: false
 
 # https://detekt.dev/docs/rules/coroutines
 # no rules defined, because we don't use coroutines

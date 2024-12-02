@@ -9,7 +9,7 @@ class Day2 : AbstractAocDay(year = 2023, day = 2) {
     private val greenCubes = 13
     private val blueCubes = 14
 
-    override fun solve1(lines: List<String>) =
+    override fun solvePart1(lines: List<String>) =
         getSumOfIdsOfPossibleGames(lines)
 
     private fun getSumOfIdsOfPossibleGames(lines: List<String>) =
@@ -51,7 +51,7 @@ class Day2 : AbstractAocDay(year = 2023, day = 2) {
                 it.blue in 0..blueCubes
         }
 
-    override fun solve2(lines: List<String>) =
+    override fun solvePart2(lines: List<String>) =
         lines.sumOf { calculatePowerOfGame(mapToGame(it)) }
 
     private fun calculatePowerOfGame(game: Game) =

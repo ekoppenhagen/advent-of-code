@@ -5,6 +5,6 @@ import io.github.ekoppenhagen.aoc.year2023.Day2
 fun main() {
     // set your day here:
     Day2()
-        .solveTask1()
-        .solveTask2()
+        .printResultsOfPart1()
+        .printResultsOfPart2()
 }
