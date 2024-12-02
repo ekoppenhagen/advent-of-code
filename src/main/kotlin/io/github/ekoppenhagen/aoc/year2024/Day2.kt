@@ -17,8 +17,11 @@ class Day2 : AbstractAocDay(year = 2024, day = 2) {
 
     private fun isReportSafe(report: List<Int>, isProblemDampenerAvailable: Boolean): Boolean {
         return if (!isProblemDampenerAvailable) isReportSafe(report)
-        else report.indices.any { isReportSafe(report.toMutableList().apply { removeAt(it) }, false) }
+        else isAnyDampenedVersionOfReportSafe(report)
     }
+
+    private fun isAnyDampenedVersionOfReportSafe(report: List<Int>) =
+        report.indices.any { isReportSafe(report.toMutableList().apply { removeAt(it) }, false) }
 
     private fun isReportSafe(report: List<Int>) = areLevelsSafe(report.zipWithNext())
 
