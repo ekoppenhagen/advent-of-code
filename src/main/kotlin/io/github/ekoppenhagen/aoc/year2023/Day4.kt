@@ -5,20 +5,20 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 // https://adventofcode.com/2023/day/4
 class Day4 : AbstractAocDay(year = 2023, day = 4) {
 
-    override fun solvePart1(lines: List<String>) =
-        lines.sumOf(::getPointsForScratchCards)
+    override fun solvePart1(scratchCards: List<String>) =
+        scratchCards.sumOf(::getPointsForScratchCards)
 
-    private fun getPointsForScratchCards(line: String) =
-        calculatePoints(getWinningNumbers(line), getDrawnNumbers(line))
+    private fun getPointsForScratchCards(scratchCard: String) =
+        calculatePoints(getWinningNumbers(scratchCard), getDrawnNumbers(scratchCard))
 
-    private fun getWinningNumbers(line: String) =
-        getNumberSegmentOfScratchCard(line, 0)
+    private fun getWinningNumbers(scratchCard: String) =
+        getNumberSegmentOfScratchCard(scratchCard, 0)
 
-    private fun getDrawnNumbers(line: String) =
-        getNumberSegmentOfScratchCard(line, 1)
+    private fun getDrawnNumbers(scratchCard: String) =
+        getNumberSegmentOfScratchCard(scratchCard, 1)
 
-    private fun getNumberSegmentOfScratchCard(line: String, segment: Int) =
-        line.substringAfter(": ")
+    private fun getNumberSegmentOfScratchCard(scratchCard: String, segment: Int) =
+        scratchCard.substringAfter(": ")
             .split(" | ")[segment]
             .split(" ")
             .filter { it != "" }
@@ -30,15 +30,15 @@ class Day4 : AbstractAocDay(year = 2023, day = 4) {
         return if (points == 1) 0 else points / 2
     }
 
-    override fun solvePart2(lines: List<String>) =
-        getAllScratchCards(lines).size
+    override fun solvePart2(scratchCards: List<String>) =
+        getAllScratchCards(scratchCards).size
 
-    private fun getAllScratchCards(lines: List<String>): List<String> {
-        val completeScratchCardList = lines.toMutableList()
-        var currentScratchCards = lines
+    private fun getAllScratchCards(scratchCards: List<String>): List<String> {
+        val completeScratchCardList = scratchCards.toMutableList()
+        var currentScratchCards = scratchCards
         var newScratchCards: List<String>
 
-        while (getAdditionalWonCards(currentScratchCards, lines).also { newScratchCards = it }.isNotEmpty()) {
+        while (getAdditionalWonCards(currentScratchCards, scratchCards).also { newScratchCards = it }.isNotEmpty()) {
             currentScratchCards = newScratchCards
             completeScratchCardList.addAll(newScratchCards)
         }
@@ -58,8 +58,8 @@ class Day4 : AbstractAocDay(year = 2023, day = 4) {
         return additionalCards
     }
 
-    private fun getCardNumber(line: String) =
-        line.substringAfter("Card").substringBefore(":").trim().toInt()
+    private fun getCardNumber(scratchCard: String) =
+        scratchCard.substringAfter("Card").substringBefore(":").trim().toInt()
 
     private fun calculateWinnings(winningNumbers: List<Int>, drawnNumbers: List<Int>) =
         drawnNumbers.map { if (winningNumbers.contains(it)) 1 else 0 }.sum()

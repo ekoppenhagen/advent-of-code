@@ -9,11 +9,11 @@ class Day2 : AbstractAocDay(year = 2023, day = 2) {
     private val greenCubes = 13
     private val blueCubes = 14
 
-    override fun solvePart1(lines: List<String>) =
-        getSumOfIdsOfPossibleGames(lines)
+    override fun solvePart1(rawGames: List<String>) =
+        getSumOfIdsOfPossibleGames(rawGames)
 
-    private fun getSumOfIdsOfPossibleGames(lines: List<String>) =
-        lines.sumOf { getIdOfPossibleGame(mapToGame(it)) }
+    private fun getSumOfIdsOfPossibleGames(rawGames: List<String>) =
+        rawGames.sumOf { getIdOfPossibleGame(mapToGame(it)) }
 
     private fun mapToGame(line: String) =
         Game(
@@ -51,8 +51,8 @@ class Day2 : AbstractAocDay(year = 2023, day = 2) {
                 it.blue in 0..blueCubes
         }
 
-    override fun solvePart2(lines: List<String>) =
-        lines.sumOf { calculatePowerOfGame(mapToGame(it)) }
+    override fun solvePart2(rawGames: List<String>) =
+        rawGames.sumOf { calculatePowerOfGame(mapToGame(it)) }
 
     private fun calculatePowerOfGame(game: Game) =
         game.cubeShowcases.maxBy(CubeShowcase::red).red *
