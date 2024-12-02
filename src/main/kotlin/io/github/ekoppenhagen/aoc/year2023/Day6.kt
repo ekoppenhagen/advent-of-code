@@ -7,7 +7,7 @@ class Day6 : AbstractAocDay(year = 2023, day = 6) {
 
     override fun solvePart1(lines: List<String>) =
         mapToRace(lines)
-            .map(::calculateAmountOfWaysToBeatCurrentRecord)
+            .map(::calculateNumberOfWaysToBeatCurrentRecord)
             .reduce { product, factor -> product * factor }
 
     private fun mapToRace(lines: List<String>): List<Race> {
@@ -19,7 +19,7 @@ class Day6 : AbstractAocDay(year = 2023, day = 6) {
     private fun parseLines(line: String) =
         line.substringAfter(":").trim().split(" ").filter(String::isNotBlank).map(String::toLong)
 
-    private fun calculateAmountOfWaysToBeatCurrentRecord(race: Race): Long {
+    private fun calculateNumberOfWaysToBeatCurrentRecord(race: Race): Long {
         val chargeTimesToBeatRecord = mutableListOf<Long>()
         repeat(race.time.toInt()) {
             val chargingTime = it + 1L
@@ -35,7 +35,7 @@ class Day6 : AbstractAocDay(year = 2023, day = 6) {
     )
 
     override fun solvePart2(lines: List<String>) =
-        calculateAmountOfWaysToBeatSingleRace(getRaceInformation(lines))
+        calculateNumberOfWaysToBeatSingleRace(getRaceInformation(lines))
 
     private fun getRaceInformation(lines: List<String>) =
         Race(
@@ -46,16 +46,16 @@ class Day6 : AbstractAocDay(year = 2023, day = 6) {
     private fun parseLine(line: String) =
         line.substringAfter(":").replace(" ", "").toLong()
 
-    private fun calculateAmountOfWaysToBeatSingleRace(race: Race): Long {
-        var amountOfWaysToBeatCurrentRecord = 0L
+    private fun calculateNumberOfWaysToBeatSingleRace(race: Race): Long {
+        var numberOfWaysToBeatCurrentRecord = 0L
 
         for (chargeTimeAndSpeed in 1..race.time) {
             val remainingTime = race.time - chargeTimeAndSpeed
             when {
-                remainingTime * chargeTimeAndSpeed > race.distance -> amountOfWaysToBeatCurrentRecord++
-                amountOfWaysToBeatCurrentRecord != 0L -> return amountOfWaysToBeatCurrentRecord
+                remainingTime * chargeTimeAndSpeed > race.distance -> numberOfWaysToBeatCurrentRecord++
+                numberOfWaysToBeatCurrentRecord != 0L -> return numberOfWaysToBeatCurrentRecord
             }
         }
-        return amountOfWaysToBeatCurrentRecord
+        return numberOfWaysToBeatCurrentRecord
     }
 }
