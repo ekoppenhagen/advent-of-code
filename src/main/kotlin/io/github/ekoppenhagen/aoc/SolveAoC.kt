@@ -1,10 +1,10 @@
 package io.github.ekoppenhagen.aoc
 
-import io.github.ekoppenhagen.aoc.year2024.Day2
+import io.github.ekoppenhagen.aoc.year2024.Day3
 
 fun main() {
     // set your day here:
-    Day2()
+    Day3()
         .printResultsOfPart1()
         .printResultsOfPart2()
 }
