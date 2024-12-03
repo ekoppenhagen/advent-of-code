@@ -14,8 +14,7 @@ class Day1 : AbstractAocDay(year = 2024, day = 1) {
         toListsOfLocationIds(lines).apply { forEach { it.sort() } }
 
     private fun toListsOfLocationIds(lines: List<String>) =
-        lines.map { toLocationIdsOfBothSides(it) }
-            .rotateClockwise()
+        lines.map(::toLocationIdsOfBothSides).rotateClockwise()
 
     private fun toLocationIdsOfBothSides(string: String) =
         string.split("   ").map { it.toInt() }
