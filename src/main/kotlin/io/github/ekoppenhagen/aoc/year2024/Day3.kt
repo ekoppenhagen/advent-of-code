@@ -9,13 +9,13 @@ class Day3 : AbstractAocDay(year = 2024, day = 3) {
         calculateSumOfAllMultiplicationResults(corruptedMemoryDump)
 
     private fun calculateSumOfAllMultiplicationResults(corruptedMemoryDump: List<String>) =
-        findAllMultiplications(corruptedMemoryDump).sumOf { addMultiplicationsOfCorruptedMemory(it) }
+        findAllMultiplications(corruptedMemoryDump).sumOf(::addMultiplicationsOfCorruptedMemory)
 
     private fun addMultiplicationsOfCorruptedMemory(corruptedMemory: List<Pair<Int, Int>>) =
         corruptedMemory.sumOf { it.first * it.second }
 
     private fun findAllMultiplications(corruptedMemoryDump: List<String>) =
-        corruptedMemoryDump.map { findMultiplications(it) }
+        corruptedMemoryDump.map(::findMultiplications)
 
     private fun findMultiplications(corruptedMemory: String) =
         getMultiplicationMatcher().findAll(corruptedMemory).map { extractNumbers(it.value) }.toList()
@@ -34,7 +34,7 @@ class Day3 : AbstractAocDay(year = 2024, day = 3) {
     private var isEnabled = true
 
     private fun calculateSumOfAllMultiplicationResultsWithConditionals(corruptedMemoryDump: List<String>) =
-        findAllMultiplicationsWithConditionals(corruptedMemoryDump).sumOf { addMultiplicationsOfCorruptedMemory(it) }
+        findAllMultiplicationsWithConditionals(corruptedMemoryDump).sumOf(::addMultiplicationsOfCorruptedMemory)
 
     private fun findAllMultiplicationsWithConditionals(corruptedMemoryDump: List<String>) =
         corruptedMemoryDump.map { filterDisabledMultiplications(findMultiplicationsWithConditionals(it)) }
@@ -45,17 +45,15 @@ class Day3 : AbstractAocDay(year = 2024, day = 3) {
     private fun getMultiplicationMatcherWithConditionals() =
         "(mul\\([0-9]{1,3},[0-9]{1,3}\\)|don't\\(\\)|do\\(\\))".toRegex()
 
-    private fun filterDisabledMultiplications(multiplicationsAndConditionals: List<String>): List<Pair<Int, Int>> {
-        val enabledMultiplications = mutableListOf<Pair<Int, Int>>()
-        multiplicationsAndConditionals.forEach {
-            when {
-                isMultiplication(it) && isEnabled -> enabledMultiplications.add(extractNumbers(it))
-                isEnablingConditional(it) -> isEnabled = true
-                isDisablingConditional(it) -> isEnabled = false
+    private fun filterDisabledMultiplications(multiplicationsAndConditionals: List<String>) =
+        multiplicationsAndConditionals.filter { toEvaluate ->
+            (isMultiplication(toEvaluate) && isEnabled).also {
+                when {
+                    isEnablingConditional(toEvaluate) -> isEnabled = true
+                    isDisablingConditional(toEvaluate) -> isEnabled = false
+                }
             }
-        }
-        return enabledMultiplications
-    }
+        }.map(::extractNumbers)
 
     private fun isMultiplication(string: String) = string.contains("mul")
 
