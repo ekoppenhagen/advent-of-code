@@ -11,3 +11,10 @@ fun <E> List<List<E>>.rotateClockwise(): MutableList<MutableList<E>> {
         }
     }
 }
+
+fun List<String>.toGrid() =
+    Array(size) { rowIndex ->
+        Array(this.firstOrNull()?.length ?: 0) { columnIndex ->
+            "${this[rowIndex][columnIndex]}"
+        }
+    }
