@@ -13,60 +13,49 @@ class Day2 : AbstractAocDay(year = 2023, day = 2) {
         getSumOfIdsOfPossibleGames(rawGames)
 
     private fun getSumOfIdsOfPossibleGames(rawGames: List<String>) =
-        rawGames.sumOf { getIdOfPossibleGame(mapToGame(it)) }
+        rawGames.mapIndexed { gameIdMinusOne, rawGame -> gameIdMinusOne + 1 to createMaxCubeMap(rawGame) }
+            .filter { isBelowCubeLimit(it.second) }
+            .sumOf { it.first }
 
-    private fun mapToGame(line: String) =
-        Game(
-            id = line.substringBefore(":").substringAfter("Game ").toInt(),
-            cubeShowcases = getCubeShowcases(line.substringAfter(":")),
-        )
-
-    private fun getCubeShowcases(showcases: String) =
-        showcases.split(";").map { getCubeShowcase(it.split(",")) }
-
-    private fun getCubeShowcase(cubes: List<String>): CubeShowcase {
-        var redCubes = 0
-        var blueCubes = 0
-        var greenCubes = 0
-        cubes.forEach {
-            when {
-                it.contains("red") -> redCubes = getCubeAmount(it)
-                it.contains("blue") -> blueCubes = getCubeAmount(it)
-                it.contains("green") -> greenCubes = getCubeAmount(it)
+    private fun createMaxCubeMap(rawGame: String) =
+        mutableMapOf<String, Int>().apply {
+            createShowcaseCubeMaps(rawGame).forEach {
+                setMaximumCubeValue("red", it, this)
+                setMaximumCubeValue("green", it, this)
+                setMaximumCubeValue("blue", it, this)
             }
         }
-        return CubeShowcase(redCubes, blueCubes, greenCubes)
+
+    private fun setMaximumCubeValue(
+        cubeColor: String,
+        showCaseCubes: Map<String, Int>,
+        maximumGameCubes: MutableMap<String, Int>,
+    ) {
+        if (maximumGameCubes.getOrDefault(cubeColor, 0) < showCaseCubes.getOrDefault(cubeColor, 0))
+            maximumGameCubes.put(cubeColor, showCaseCubes.getOrDefault(cubeColor, 0))
     }
 
-    private fun getCubeAmount(colorAmount: String) =
-        colorAmount.trim().split(" ").first().toInt()
+    private fun createShowcaseCubeMaps(rawGame: String) =
+        getAllShowcases(rawGame).map { createMapOfCubesInShowcase(toShowcase(it)) }
 
-    private fun getIdOfPossibleGame(game: Game) =
-        if (isPossible(game)) game.id else 0
+    private fun isBelowCubeLimit(maxCubeMap: Map<String, Int>) =
+        maxCubeMap["red"]!! <= redCubes &&
+            maxCubeMap["green"]!! <= greenCubes &&
+            maxCubeMap["blue"]!! <= blueCubes
 
-    private fun isPossible(game: Game) =
-        game.cubeShowcases.all {
-            it.red in 0..redCubes &&
-                it.green in 0..greenCubes &&
-                it.blue in 0..blueCubes
-        }
+    private fun getAllShowcases(rawGame: String) =
+        rawGame.substringAfter(": ").split("; ")
+
+    private fun toShowcase(rawShowcase: String) =
+        rawShowcase.split(", ")
+
+    private fun createMapOfCubesInShowcase(showcase: List<String>) =
+        showcase.associate { it.split(" ")[1] to it.split(" ")[0].toInt() }
 
     override fun solvePart2(rawGames: List<String>) =
-        rawGames.sumOf { calculatePowerOfGame(mapToGame(it)) }
+        getSumOfPowerOfGames(rawGames)
 
-    private fun calculatePowerOfGame(game: Game) =
-        game.cubeShowcases.maxBy(CubeShowcase::red).red *
-            game.cubeShowcases.maxBy(CubeShowcase::blue).blue *
-            game.cubeShowcases.maxBy(CubeShowcase::green).green
-
-    private data class Game(
-        val id: Int,
-        val cubeShowcases: List<CubeShowcase>
-    )
-
-    private data class CubeShowcase(
-        val red: Int,
-        val blue: Int,
-        val green: Int,
-    )
+    private fun getSumOfPowerOfGames(rawGames: List<String>) =
+        rawGames.map { createMaxCubeMap(it) }
+            .sumOf { it.values.reduce(Int::times) }
 }
