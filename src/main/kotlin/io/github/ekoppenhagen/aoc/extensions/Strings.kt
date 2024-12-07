@@ -13,3 +13,8 @@ fun String.toListOfDigits() =
 fun String.toListOfDigitsWithSpelledOutNumbers() =
     stringHelpers.getAllNumbersIncludingSpelledOutOnes(this)
         .map { stringHelpers.toArabicNumeral(it) }
+
+fun String.getAllNumbers() =
+    Regex("(?<numbers>[0-9]+)").findAll(this)
+        .mapNotNull { it.value.toLongOrNull() }
+        .toList()
