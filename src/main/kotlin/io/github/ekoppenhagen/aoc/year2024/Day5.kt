@@ -1,6 +1,7 @@
 package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
+import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
 // https://adventofcode.com/2024/day/5
 class Day5 : AbstractAocDay(year = 2024, day = 5) {
@@ -17,8 +18,8 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
     private fun extractPageOrderingRules(pageOrderingRulesAndUpdates: List<String>) =
         getOrderingRuleLines(pageOrderingRulesAndUpdates).map(::parseOrderingRule)
 
-    private fun parseOrderingRule(string: String): Pair<Int, Int> =
-        string.split("|").let { Pair(it[0].toInt(), it[1].toInt()) }
+    private fun parseOrderingRule(rawOrderingRule: String): Pair<Long, Long> =
+        rawOrderingRule.getAllNumbers().let { Pair(it[0], it[1]) }
 
     private fun getOrderingRuleLines(pageOrderingRulesAndUpdates: List<String>) =
         pageOrderingRulesAndUpdates.subList(0, pageOrderingRulesAndUpdates.indexOf(""))
@@ -30,15 +31,15 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
         pageOrderingRulesAndUpdates.drop(pageOrderingRulesAndUpdates.indexOf("") + 1)
 
     private fun parseUpdate(update: String) =
-        update.split(",").map(String::toInt)
+        update.getAllNumbers()
 
-    private fun findAllValidUpdateMiddlePages(pageOrderingRules: List<Pair<Int, Int>>, updates: List<List<Int>>) =
+    private fun findAllValidUpdateMiddlePages(pageOrderingRules: List<Pair<Long, Long>>, updates: List<List<Long>>) =
         findAllValidUpdates(pageOrderingRules, updates).map(::getMiddlePage)
 
-    private fun findAllValidUpdates(pageOrderingRules: List<Pair<Int, Int>>, updates: List<List<Int>>) =
+    private fun findAllValidUpdates(pageOrderingRules: List<Pair<Long, Long>>, updates: List<List<Long>>) =
         updates.filter { isValidUpdate(it, pageOrderingRules) }
 
-    private fun isValidUpdate(update: List<Int>, pageOrderingRules: List<Pair<Int, Int>>) =
+    private fun isValidUpdate(update: List<Long>, pageOrderingRules: List<Pair<Long, Long>>) =
         !update.any {
             isOrderingRuleViolated(
                 it,
@@ -49,19 +50,19 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
         }
 
     private fun isOrderingRuleViolated(
-        page: Int,
-        pagesBefore: List<Int>,
-        pagesAfter: List<Int>,
-        matchingRules: List<Pair<Int, Int>>,
+        page: Long,
+        pagesBefore: List<Long>,
+        pagesAfter: List<Long>,
+        matchingRules: List<Pair<Long, Long>>,
     ) = matchingRules.any {
         if (page == it.first) pagesBefore.contains(it.second)
         else pagesAfter.contains(it.first)
     }
 
-    private fun getMatchingOrderingRules(page: Int, pageOrderingRules: List<Pair<Int, Int>>) =
+    private fun getMatchingOrderingRules(page: Long, pageOrderingRules: List<Pair<Long, Long>>) =
         pageOrderingRules.filter { it.first == page || it.second == page }
 
-    private fun getMiddlePage(validUpdate: List<Int>) =
+    private fun getMiddlePage(validUpdate: List<Long>) =
         validUpdate[validUpdate.size / 2]
 
     override fun solvePart2(pageOrderingRulesAndUpdates: List<String>) =
@@ -73,20 +74,20 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
             extractUpdates(pageOrderingRulesAndUpdates),
         ).sum()
 
-    private fun findAllInvalidUpdateMiddlePages(pageOrderingRules: List<Pair<Int, Int>>, updates: List<List<Int>>) =
+    private fun findAllInvalidUpdateMiddlePages(pageOrderingRules: List<Pair<Long, Long>>, updates: List<List<Long>>) =
         sortByOrderingRules(findAllInvalidUpdates(pageOrderingRules, updates), pageOrderingRules).map(::getMiddlePage)
 
-    private fun findAllInvalidUpdates(pageOrderingRules: List<Pair<Int, Int>>, updates: List<List<Int>>) =
+    private fun findAllInvalidUpdates(pageOrderingRules: List<Pair<Long, Long>>, updates: List<List<Long>>) =
         updates.filter { !isValidUpdate(it, pageOrderingRules) }
 
-    private fun sortByOrderingRules(invalidUpdates: List<List<Int>>, pageOrderingRules: List<Pair<Int, Int>>) =
-        mutableListOf<List<Int>>().apply {
+    private fun sortByOrderingRules(invalidUpdates: List<List<Long>>, pageOrderingRules: List<Pair<Long, Long>>) =
+        mutableListOf<List<Long>>().apply {
             invalidUpdates.forEach { this.add(it.sortedWith(UpdatePageComparator(pageOrderingRules))) }
         }
 
-    private class UpdatePageComparator(private val pageOrderingRules: List<Pair<Int, Int>>) : Comparator<Int> {
+    private class UpdatePageComparator(private val pageOrderingRules: List<Pair<Long, Long>>) : Comparator<Long> {
 
-        override fun compare(firstUpdatePage: Int, secondUpdatePage: Int) =
+        override fun compare(firstUpdatePage: Long, secondUpdatePage: Long) =
             pageOrderingRules
                 .find {
                     it.first == firstUpdatePage && it.second == secondUpdatePage ||
