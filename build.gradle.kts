@@ -1,5 +1,5 @@
 group = "io.github.ekoppenhagen"
-version = "2024.6.0"
+version = "2024.6.1"
 
 repositories(RepositoryHandler::mavenCentral)
 kotlin { jvmToolchain(21) }
@@ -7,7 +7,7 @@ kotlin { jvmToolchain(21) }
 plugins {
     application
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-bom
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
     // https://mvnrepository.com/artifact/io.gitlab.arturbosch.detekt/detekt-gradle-plugin
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
