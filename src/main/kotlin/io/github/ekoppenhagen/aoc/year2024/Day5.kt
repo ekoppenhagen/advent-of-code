@@ -22,7 +22,7 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
         rawOrderingRule.getAllNumbers().let { Pair(it[0], it[1]) }
 
     private fun getOrderingRuleLines(pageOrderingRulesAndUpdates: List<String>) =
-        pageOrderingRulesAndUpdates.subList(0, pageOrderingRulesAndUpdates.indexOf(""))
+        pageOrderingRulesAndUpdates.take(pageOrderingRulesAndUpdates.indexOf("") + 1)
 
     private fun extractUpdates(pageOrderingRulesAndUpdates: List<String>) =
         getUpdateLines(pageOrderingRulesAndUpdates).map(::parseUpdate)
@@ -43,7 +43,7 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
         !update.any {
             isOrderingRuleViolated(
                 it,
-                update.subList(0, update.indexOf(it)),
+                update.take(update.indexOf(it) + 1),
                 update.drop(update.indexOf(it) + 1),
                 getMatchingOrderingRules(it, pageOrderingRules),
             )
