@@ -1,5 +1,7 @@
 package io.github.ekoppenhagen.aoc.extensions
 
+import java.util.*
+
 fun <E> List<E>.toPairOfFirstAndLastElement() =
     if (this.isEmpty()) null to null else this[0] to this[this.lastIndex]
 
@@ -18,3 +20,25 @@ fun List<String>.toGrid() =
             "${this[rowIndex][columnIndex]}"
         }
     }
+
+fun <E> LinkedList<E>.removeLastWhile(predicate: (E) -> Boolean): LinkedList<E> {
+    if (!isEmpty()) {
+        val iterator = listIterator(size)
+        while (iterator.hasPrevious()) {
+            if (!predicate(iterator.previous())) {
+                return take(iterator.nextIndex() + 1)
+            }
+        }
+    }
+    return LinkedList()
+}
+
+private fun <T> Iterable<T>.take(n: Int): LinkedList<T> {
+    val reducedList = LinkedList<T>()
+    var count = 0
+    for (item in this) {
+        reducedList.add(item)
+        if (++count == n) break
+    }
+    return reducedList
+}
