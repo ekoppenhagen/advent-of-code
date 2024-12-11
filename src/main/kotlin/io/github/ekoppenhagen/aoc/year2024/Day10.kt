@@ -10,7 +10,7 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
     override fun solvePart1(topographicMap: List<String>) =
         calculateTrailheadScores(topographicMap.toNumberGrid()).flatten().sum()
 
-    private fun calculateTrailheadScores(topographicMap: Array<Array<Int>>) =
+    private fun calculateTrailheadScores(topographicMap: Array<IntArray>) =
         topographicMap.mapIndexed { rowIndex, row ->
             row.mapIndexed { columnIndex, height ->
                 if (!isTrailhead(height)) 0
@@ -18,10 +18,10 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
             }
         }
 
-    private fun calculateTrailheadScore(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>) =
+    private fun calculateTrailheadScore(rowIndex: Int, columnIndex: Int, topographicMap: Array<IntArray>) =
         findHikingPathsToReachablePeaks(rowIndex, columnIndex, topographicMap).map { it.last() }.toSet().size
 
-    private fun getNextHeight(topographicMap: Array<Array<Int>>, rowIndex: Int, columnIndex: Int) =
+    private fun getNextHeight(topographicMap: Array<IntArray>, rowIndex: Int, columnIndex: Int) =
         topographicMap.getOrNull(rowIndex)?.getOrNull(columnIndex)?.toInt()
 
     private fun isOutsideOfMap(height: Int?) =
@@ -39,7 +39,7 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
     override fun solvePart2(topographicMap: List<String>) =
         calculateNumberOfPathsForAllTrailheads(topographicMap.toNumberGrid()).flatten().sum()
 
-    private fun calculateNumberOfPathsForAllTrailheads(topographicMap: Array<Array<Int>>) =
+    private fun calculateNumberOfPathsForAllTrailheads(topographicMap: Array<IntArray>) =
         topographicMap.mapIndexed { rowIndex, row ->
             row.mapIndexed { columnIndex, height ->
                 if (!isTrailhead(height.toInt())) 0
@@ -47,10 +47,11 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
             }
         }
 
-    private fun calculateNumberOfPaths(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>) =
+    private fun calculateNumberOfPaths(rowIndex: Int, columnIndex: Int, topographicMap: Array<IntArray>) =
         findHikingPathsToReachablePeaks(rowIndex, columnIndex, topographicMap).size
 
-    private fun findNumberOfPaths(currentHeight: Int?, previousHeight: Int, rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>): Int =
+    @Suppress("CanBeNonNullable") // false positive due to recursion
+    private fun findNumberOfPaths(currentHeight: Int?, previousHeight: Int, rowIndex: Int, columnIndex: Int, topographicMap: Array<IntArray>): Int =
         when {
             isOutsideOfMap(currentHeight) -> 0
             !isGradualUphill(previousHeight, currentHeight!!) -> 0
@@ -61,16 +62,16 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
                 findNumberOfPaths(getNextHeight(topographicMap, rowIndex, columnIndex - 1), currentHeight, rowIndex, columnIndex - 1, topographicMap)
         }
 
-    private fun findHikingPathsToReachablePeaks(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>) =
+    private fun findHikingPathsToReachablePeaks(rowIndex: Int, columnIndex: Int, topographicMap: Array<IntArray>) =
         mutableListOf<List<Location>>().apply { findHikingPathsToReachablePeaks(-1, 0, rowIndex, columnIndex, topographicMap) }
 
-    @Suppress("LongParameterList")
+    @Suppress("LongParameterList", "CanBeNonNullable") // false positive due to recursion
     private fun MutableList<List<Location>>.findHikingPathsToReachablePeaks(
         currentHeight: Int?,
         previousHeight: Int,
         rowIndex: Int,
         columnIndex: Int,
-        topographicMap: Array<Array<Int>>,
+        topographicMap: Array<IntArray>,
         currentRoute: List<Location> = emptyList(),
     ) {
         when {
@@ -86,7 +87,7 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
         currentHeight: Int,
         rowIndex: Int,
         columnIndex: Int,
-        topographicMap: Array<Array<Int>>,
+        topographicMap: Array<IntArray>,
         currentRoute: List<Location>,
     ) {
         findHikingPathsToReachablePeaks(

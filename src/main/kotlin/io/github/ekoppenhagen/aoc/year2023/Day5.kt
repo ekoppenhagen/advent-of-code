@@ -57,15 +57,14 @@ class Day5 : AbstractAocDay(year = 2023, day = 5) {
     private fun isInSeedRange(seedForLocation: Long, seedRanges: List<Pair<Long, Long>>) =
         seedRanges.any { it.first <= seedForLocation && it.second >= seedForLocation }
 
-    private fun getSeedForLocation(location: Long, lines: List<String>): Long {
-        return getRequiredValueForDesiredOutcome("humidity-to-location", lines, location)
+    private fun getSeedForLocation(location: Long, lines: List<String>) =
+        getRequiredValueForDesiredOutcome("humidity-to-location", lines, location)
             .let { getRequiredValueForDesiredOutcome("temperature-to-humidity", lines, it) }
             .let { getRequiredValueForDesiredOutcome("light-to-temperature", lines, it) }
             .let { getRequiredValueForDesiredOutcome("water-to-light", lines, it) }
             .let { getRequiredValueForDesiredOutcome("fertilizer-to-water", lines, it) }
             .let { getRequiredValueForDesiredOutcome("soil-to-fertilizer", lines, it) }
             .let { getRequiredValueForDesiredOutcome("seed-to-soil", lines, it) }
-    }
 
     private fun getRequiredValueForDesiredOutcome(section: String, lines: List<String>, outcome: Long): Long =
         getRangeAndKeys(section, lines)

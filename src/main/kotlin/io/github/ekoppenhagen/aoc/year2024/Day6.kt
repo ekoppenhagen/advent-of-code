@@ -15,13 +15,13 @@ class Day6 : AbstractAocDay(year = 2024, day = 6) {
     override fun solvePart1(labMap: List<String>) =
         calculateNumberOfDistinctPositionsOfGuardRoute(labMap.toCharacterGrid())
 
-    private fun calculateNumberOfDistinctPositionsOfGuardRoute(labGridMap: Array<Array<Char>>) =
+    private fun calculateNumberOfDistinctPositionsOfGuardRoute(labGridMap: Array<CharArray>) =
         getAllPatrolTiles(labGridMap).size
 
-    private fun getAllPatrolTiles(labGridMap: Array<Array<Char>>) =
+    private fun getAllPatrolTiles(labGridMap: Array<CharArray>) =
         mutableSetOf(getStartingPositionOfGuard(labGridMap)).apply { runPatrol(labGridMap, this) }
 
-    private fun runPatrol(labGridMap: Array<Array<Char>>, patrolTiles: MutableSet<Location>) {
+    private fun runPatrol(labGridMap: Array<CharArray>, patrolTiles: MutableSet<Location>) {
         var currentGuardPosition = patrolTiles.first()
         var guardDirection = UP
         var nextGuardPosition = getNextPosition(currentGuardPosition, guardDirection)
@@ -32,7 +32,8 @@ class Day6 : AbstractAocDay(year = 2024, day = 6) {
         }
     }
 
-    private fun getStartingPositionOfGuard(labGridMap: Array<Array<Char>>): Location =
+    @Suppress("UnnecessaryLet") // false positive
+    private fun getStartingPositionOfGuard(labGridMap: Array<CharArray>): Location =
         labGridMap.let {
             it.forEachIndexed { rowIndex, row ->
                 row.forEachIndexed { columnIndex, column ->
@@ -42,7 +43,7 @@ class Day6 : AbstractAocDay(year = 2024, day = 6) {
             Location(-1, -1)
         }
 
-    private fun isInsideLab(position: Location, labGridMap: Array<Array<Char>>) =
+    private fun isInsideLab(position: Location, labGridMap: Array<CharArray>) =
         position.row in 0..<labGridMap.size && position.column in 0..<labGridMap.first().size
 
     private fun getNextPosition(currentGuardPosition: Location, direction: Direction) =
@@ -53,7 +54,7 @@ class Day6 : AbstractAocDay(year = 2024, day = 6) {
             LEFT -> Location(currentGuardPosition.row, currentGuardPosition.column - 1)
         }
 
-    private fun isObstacle(position: Location, labGridMap: Array<Array<Char>>) =
+    private fun isObstacle(position: Location, labGridMap: Array<CharArray>) =
         labGridMap[position.row][position.column] == '#'
 
     override fun solvePart2(labMap: List<String>) =

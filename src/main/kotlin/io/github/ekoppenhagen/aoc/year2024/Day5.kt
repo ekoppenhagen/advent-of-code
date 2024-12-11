@@ -19,7 +19,7 @@ class Day5 : AbstractAocDay(year = 2024, day = 5) {
         getOrderingRuleLines(pageOrderingRulesAndUpdates).map(::parseOrderingRule)
 
     private fun parseOrderingRule(rawOrderingRule: String): Pair<Long, Long> =
-        rawOrderingRule.getAllNumbers().let { Pair(it[0], it[1]) }
+        rawOrderingRule.getAllNumbers().let { it[0] to it[1] }
 
     private fun getOrderingRuleLines(pageOrderingRulesAndUpdates: List<String>) =
         pageOrderingRulesAndUpdates.take(pageOrderingRulesAndUpdates.indexOf("") + 1)

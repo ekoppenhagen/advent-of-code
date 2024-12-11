@@ -14,10 +14,9 @@ class Day2 : AbstractAocDay(year = 2024, day = 2) {
         isProblemDampenerAvailable: Boolean,
     ) = rawData.count { isReportSafe(it.getAllNumbers(), isProblemDampenerAvailable) }
 
-    private fun isReportSafe(report: List<Long>, isProblemDampenerAvailable: Boolean): Boolean {
-        return if (!isProblemDampenerAvailable) isReportSafe(report)
+    private fun isReportSafe(report: List<Long>, isProblemDampenerAvailable: Boolean): Boolean =
+        if (!isProblemDampenerAvailable) isReportSafe(report)
         else isAnyDampenedVersionOfReportSafe(report)
-    }
 
     private fun isAnyDampenedVersionOfReportSafe(report: List<Long>) =
         report.indices.any { isReportSafe(report.toMutableList().apply { removeAt(it) }, false) }
@@ -37,5 +36,3 @@ class Day2 : AbstractAocDay(year = 2024, day = 2) {
     override fun solvePart2(rawData: List<String>) =
         getNumberOfSafeReports(rawData, isProblemDampenerAvailable = true)
 }
-
-

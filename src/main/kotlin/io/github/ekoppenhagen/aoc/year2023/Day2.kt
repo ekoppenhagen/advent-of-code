@@ -39,9 +39,9 @@ class Day2 : AbstractAocDay(year = 2023, day = 2) {
         getAllShowcases(rawGame).map { createMapOfCubesInShowcase(toShowcase(it)) }
 
     private fun isBelowCubeLimit(maxCubeMap: Map<String, Int>) =
-        maxCubeMap["red"]!! <= redCubes &&
-            maxCubeMap["green"]!! <= greenCubes &&
-            maxCubeMap["blue"]!! <= blueCubes
+        maxCubeMap.getOrDefault("red", redCubes + 1) <= redCubes &&
+            maxCubeMap.getOrDefault("green", greenCubes + 1) <= greenCubes &&
+            maxCubeMap.getOrDefault("blue", blueCubes + 1) <= blueCubes
 
     private fun getAllShowcases(rawGame: String) =
         rawGame.substringAfter(": ").split("; ")

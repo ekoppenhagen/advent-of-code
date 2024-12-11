@@ -16,7 +16,7 @@ class Day8 : AbstractAocDay(year = 2024, day = 8) {
     private fun findAllUniqueAntinodeLocations(cityAntennaMap: List<String>) =
         findAllAntennasForFrequencies(cityAntennaMap.toCharacterGrid()).map(::calculateAllAntinodeLocations).flatten().toSet()
 
-    private fun findAllAntennasForFrequencies(cityAntennaMap: Array<Array<Char>>) =
+    private fun findAllAntennasForFrequencies(cityAntennaMap: Array<CharArray>) =
         mutableMapOf<Char, MutableList<Location>>().apply {
             cityAntennaMap.forEachIndexed { rowIndex, row ->
                 row.forEachIndexed { columnIndex, frequency ->
@@ -39,7 +39,7 @@ class Day8 : AbstractAocDay(year = 2024, day = 8) {
         mutableListOf<Pair<Location, Location>>().apply {
             antennaLocations.forEachIndexed { antennaIndex, antennaLocation ->
                 antennaLocations.drop(antennaIndex + 1).forEach { otherAntennaLocation ->
-                    add(Pair(antennaLocation, otherAntennaLocation))
+                    add(antennaLocation to otherAntennaLocation)
                 }
             }
         }

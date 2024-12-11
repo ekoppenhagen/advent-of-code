@@ -14,12 +14,18 @@ complexity:
     ignoreSingleWhenExpression: true
   LargeClass:
     threshold: 301
+    excludes:
+      - '**/test/**'
   LongMethod:
     threshold: 31
+    excludes:
+      - '**/test/**'
   LongParameterList:
-    excludes: [ '**/model/**' ]
-  NestedScopeFunctions:
-    active: true
+    excludes:
+      - '**/model/**'
+      - '**/test/**'
+  NestedBlockDepth:
+    threshold: 4
   TooManyFunctions:
     active: false
 
@@ -46,8 +52,6 @@ formatting:
     maxLineLength: 160
   ContextReceiverMapping:
     maxLineLength: 160
-  DiscouragedCommentLocation:
-    active: true
   EnumWrapping:
     active: true
   MaximumLineLength:
@@ -58,6 +62,8 @@ formatting:
     maxLineLength: 160
   PropertyWrapping:
     maxLineLength: 160
+  Wrapping:
+    active: false
 
 # https://detekt.dev/docs/rules/libraries
 # no rules defined, because we do not use the plugin
@@ -68,16 +74,20 @@ naming:
     active: true
   LambdaParameterNaming:
     active: true
-    parameterPattern: '[a-z]+[A-Za-z0-9]{2,}|_'
+    parameterPattern: '^[a-z]+[A-Za-z0-9]{2,}|_'
   NonBooleanPropertyPrefixedWithIs:
     active: true
+  VariableMinLength:
+    active: true
+    minimumVariableNameLength: 2
 
 # https://detekt.dev/docs/rules/performance/
 performance:
   CouldBeSequence:
     active: true
   SpreadOperator:
-    active: false
+    excludes:
+      - '**/**/*Application.kt'
   UnnecessaryPartOfBinaryExpression:
     active: true
 
@@ -91,10 +101,18 @@ potential-bugs:
     active: true
   DontDowncastCollectionTypes:
     active: true
+  ElseCaseInsteadOfExhaustiveWhen:
+    active: true
+  LateinitUsage:
+    active: true
+    excludes:
+      - '**/test/**'
   MissingPackageDeclaration:
     active: true
-  UnnecessaryNotNullCheck:
+  NullCheckOnMutableProperty:
     active: true
+  UnsafeCallOnNullableType:
+    active: false
 
 # https://detekt.dev/docs/rules/ruleauthors
 # no rules defined, because we do not use the plugin
@@ -111,26 +129,34 @@ style:
     active: true
   EqualsOnSignatureLine:
     active: true
+  ExplicitCollectionElementAccessMethod:
+    active: true
   ExpressionBodySyntax:
     active: true
-    includeLineWrapping: false
-  ForbiddenMethodCall:
-    active: true
-  ForbiddenVoid:
-    active: true
+    includeLineWrapping: true
   MagicNumber:
     active: false
+  MandatoryBracesLoops:
+    active: true
   MaxLineLength:
     maxLineLength: 160
+  MultilineRawStringIndentation:
+    active: true
+  NullableBooleanCheck:
+    active: true
   PreferToOverPairSyntax:
     active: true
   RedundantExplicitType:
     active: true
   RedundantVisibilityModifierRule:
     active: true
+  ReturnCount:
+    excludeGuardClauses: true
   SpacingBetweenPackageAndImports:
     active: true
   TrailingWhitespace:
+    active: true
+  TrimMultilineRawString:
     active: true
   UnderscoresInNumericLiterals:
     active: true
@@ -138,13 +164,15 @@ style:
     active: true
   UnnecessaryLet:
     active: true
-  UnnecessaryParentheses:
-    active: true
   UntilInsteadOfRangeTo:
     active: true
   UnusedImports:
     active: true
   UseEmptyCounterpart:
+    active: true
+  UseIfEmptyOrIfBlank:
+    active: true
+  UseLet:
     active: true
   UseSumOfInsteadOfFlatMapSize:
     active: true

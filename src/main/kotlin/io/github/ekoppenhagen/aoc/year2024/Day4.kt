@@ -15,7 +15,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun findAllAppearancesOfXmas(wordSearch: List<String>) =
         findAllWordsWithFourLetters(wordSearch.toCharacterGrid()).filter { it == "XMAS" || it == "SAMX" }
 
-    private fun findAllWordsWithFourLetters(wordSearch: Array<Array<Char>>) =
+    private fun findAllWordsWithFourLetters(wordSearch: Array<CharArray>) =
         wordSearch.mapIndexed { rowIndex, row ->
             row.mapIndexed { columnIndex, _ ->
                 getFourLetterWordsInEachDirection(rowIndex, columnIndex, wordSearch)
@@ -25,8 +25,8 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getFourLetterWordsInEachDirection(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>
-    ) = listOfNotNull(
+        wordSearch: Array<CharArray>
+    ) = listOf(
         getWordToTheRight(rowIndex, columnIndex, wordSearch),
         getWordFromDiagonalRight(rowIndex, columnIndex, wordSearch),
         getWordFromBelow(rowIndex, columnIndex, wordSearch),
@@ -36,7 +36,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getWordToTheRight(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>,
+        wordSearch: Array<CharArray>,
     ) = listOfNotNull(
         wordSearch.getOrNull(rowIndex)?.getOrNull(columnIndex),
         wordSearch.getOrNull(rowIndex)?.getOrNull(columnIndex + 1),
@@ -47,7 +47,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getWordFromDiagonalRight(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>,
+        wordSearch: Array<CharArray>,
     ) = listOfNotNull(
         wordSearch.getOrNull(rowIndex)?.getOrNull(columnIndex),
         wordSearch.getOrNull(rowIndex + 1)?.getOrNull(columnIndex + 1),
@@ -58,7 +58,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getWordFromBelow(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>
+        wordSearch: Array<CharArray>
     ) = listOfNotNull(
         wordSearch.getOrNull(rowIndex)?.getOrNull(columnIndex),
         wordSearch.getOrNull(rowIndex + 1)?.getOrNull(columnIndex),
@@ -69,7 +69,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getWordFromDiagonalLeft(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>,
+        wordSearch: Array<CharArray>,
     ) = listOfNotNull(
         wordSearch.getOrNull(rowIndex)?.getOrNull(columnIndex),
         wordSearch.getOrNull(rowIndex + 1)?.getOrNull(columnIndex - 1),
@@ -90,7 +90,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
         (cross.first == "MAS" || cross.first == "SAM") &&
             (cross.second == "MAS" || cross.second == "SAM")
 
-    private fun findAllCrossWordsWithThreeLetters(wordSearch: Array<Array<Char>>) =
+    private fun findAllCrossWordsWithThreeLetters(wordSearch: Array<CharArray>) =
         wordSearch.mapIndexed { rowIndex, row ->
             row.mapIndexed { columnIndex, _ ->
                 getThreeLetterCrossWords(rowIndex, columnIndex, wordSearch)
@@ -103,16 +103,13 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getThreeLetterCrossWords(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>
-    ) = Pair(
-        getCrossWordDiagonalRightDown(rowIndex, columnIndex, wordSearch),
-        getCrossWordDiagonalRightUp(rowIndex, columnIndex, wordSearch),
-    )
+        wordSearch: Array<CharArray>
+    ) = getCrossWordDiagonalRightDown(rowIndex, columnIndex, wordSearch) to getCrossWordDiagonalRightUp(rowIndex, columnIndex, wordSearch)
 
     private fun getCrossWordDiagonalRightDown(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>,
+        wordSearch: Array<CharArray>,
     ) = listOfNotNull(
         wordSearch.getOrNull(rowIndex)?.getOrNull(columnIndex),
         wordSearch.getOrNull(rowIndex + 1)?.getOrNull(columnIndex + 1),
@@ -122,7 +119,7 @@ class Day4 : AbstractAocDay(year = 2024, day = 4) {
     private fun getCrossWordDiagonalRightUp(
         rowIndex: Int,
         columnIndex: Int,
-        wordSearch: Array<Array<Char>>,
+        wordSearch: Array<CharArray>,
     ) = listOfNotNull(
         wordSearch.getOrNull(rowIndex + 2)?.getOrNull(columnIndex),
         wordSearch.getOrNull(rowIndex + 1)?.getOrNull(columnIndex + 1),

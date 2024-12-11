@@ -17,7 +17,7 @@ class Day7 : AbstractAocDay(year = 2024, day = 7) {
         calibrationEquations.map { getEquationParts(it) }.filter { isValidEquation(it, useMissingOperator) }
 
     private fun getEquationParts(rawCalibrationEquation: String) =
-        rawCalibrationEquation.getAllNumbers().let { Pair(it.first(), it.drop(1)) }
+        rawCalibrationEquation.getAllNumbers().let { it.first() to it.drop(1) }
 
     private fun isValidEquation(calibrationEquation: Pair<Long, List<Long>>, useMissingOperator: Boolean) =
         isPossibleCombination(calibrationEquation.first, useMissingOperator, calibrationEquation.second.first(), calibrationEquation.second.drop(1))

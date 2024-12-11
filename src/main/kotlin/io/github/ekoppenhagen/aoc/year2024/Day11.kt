@@ -37,7 +37,7 @@ class Day11 : AbstractAocDay(year = 2024, day = 11) {
     private fun hasEvenDigits(number: Long) =
         number.toString().length % 2 == 0
 
-    private fun splitStoneAndGetNumberOfEvolvingStones(stone: Stone, stoneEvolveCache: MutableMap<Stone, Long>): Long =
+    private fun splitStoneAndGetNumberOfEvolvingStones(stone: Stone, stoneEvolveCache: MutableMap<Stone, Long>) =
         getTotalNumberOfEvolvingStones(
             listOf(
                 Stone(getFirstHalfOfNumber(stone.number), stone.blinksLeft - 1),

@@ -1,5 +1,5 @@
 group = "io.github.ekoppenhagen"
-version = "2024.11.0"
+version = "2024.11.1"
 
 repositories(RepositoryHandler::mavenCentral)
 kotlin { jvmToolchain(21) }
@@ -12,6 +12,10 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
 
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
+}
+
 application {
     mainClass.set("SolveAoCKt")
 }
@@ -19,7 +23,7 @@ application {
 detekt {
     // https://mvnrepository.com/artifact/io.gitlab.arturbosch.detekt/detekt-gradle-plugin
     toolVersion = "1.23.7"
-    config.from(file("config/detekt.yml"))
+    config.from(file("detekt.yml"))
     buildUponDefaultConfig = true
     allRules = false
 }
