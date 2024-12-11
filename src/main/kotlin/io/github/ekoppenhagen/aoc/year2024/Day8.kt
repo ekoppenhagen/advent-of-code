@@ -2,7 +2,7 @@ package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Location
-import io.github.ekoppenhagen.aoc.extensions.toGrid
+import io.github.ekoppenhagen.aoc.extensions.toCharacterGrid
 
 // https://adventofcode.com/2024/day/8
 class Day8 : AbstractAocDay(year = 2024, day = 8) {
@@ -14,25 +14,25 @@ class Day8 : AbstractAocDay(year = 2024, day = 8) {
         findAllUniqueAntinodeLocations(cityAntennaMap).filter { isInsideMap(it, cityAntennaMap) }
 
     private fun findAllUniqueAntinodeLocations(cityAntennaMap: List<String>) =
-        findAllAntennasForFrequencies(cityAntennaMap.toGrid()).map(::calculateAllAntinodeLocations).flatten().toSet()
+        findAllAntennasForFrequencies(cityAntennaMap.toCharacterGrid()).map(::calculateAllAntinodeLocations).flatten().toSet()
 
-    private fun findAllAntennasForFrequencies(cityAntennaMap: Array<Array<String>>) =
-        mutableMapOf<String, MutableList<Location>>().apply {
+    private fun findAllAntennasForFrequencies(cityAntennaMap: Array<Array<Char>>) =
+        mutableMapOf<Char, MutableList<Location>>().apply {
             cityAntennaMap.forEachIndexed { rowIndex, row ->
                 row.forEachIndexed { columnIndex, frequency ->
-                    if (frequency != ".") addAntennaOfFrequency(this, frequency, rowIndex, columnIndex)
+                    if (frequency != '.') addAntennaOfFrequency(this, frequency, rowIndex, columnIndex)
                 }
             }
         }
 
     private fun addAntennaOfFrequency(
-        antennaDictionary: MutableMap<String, MutableList<Location>>,
-        frequency: String,
+        antennaDictionary: MutableMap<Char, MutableList<Location>>,
+        frequency: Char,
         rowIndex: Int,
         columnIndex: Int
     ) = antennaDictionary.getOrPut(frequency) { mutableListOf() }.add(Location(rowIndex, columnIndex))
 
-    private fun calculateAllAntinodeLocations(frequencyAntennas: Map.Entry<String, List<Location>>) =
+    private fun calculateAllAntinodeLocations(frequencyAntennas: Map.Entry<Char, List<Location>>) =
         getAllAntennaCombinations(frequencyAntennas.value).map(::calculateAntinodesOfAntennas).flatten()
 
     private fun getAllAntennaCombinations(antennaLocations: List<Location>) =
@@ -64,9 +64,12 @@ class Day8 : AbstractAocDay(year = 2024, day = 8) {
         findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap).size
 
     private fun findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap: List<String>) =
-        findAllAntennasForFrequencies(cityAntennaMap.toGrid()).map { calculateAllAntinodeLocationsWithResonantHarmonics(it, cityAntennaMap) }.flatten().toSet()
+        findAllAntennasForFrequencies(cityAntennaMap.toCharacterGrid())
+            .map { calculateAllAntinodeLocationsWithResonantHarmonics(it, cityAntennaMap) }
+            .flatten()
+            .toSet()
 
-    private fun calculateAllAntinodeLocationsWithResonantHarmonics(frequencyAntennas: Map.Entry<String, List<Location>>, cityAntennaMap: List<String>) =
+    private fun calculateAllAntinodeLocationsWithResonantHarmonics(frequencyAntennas: Map.Entry<Char, List<Location>>, cityAntennaMap: List<String>) =
         getAllAntennaCombinations(frequencyAntennas.value).map { calculateAntinodesOfAntennasWithResonantHarmonics(it, cityAntennaMap) }.flatten()
 
     private fun calculateAntinodesOfAntennasWithResonantHarmonics(antennaPairs: Pair<Location, Location>, cityAntennaMap: List<String>) =

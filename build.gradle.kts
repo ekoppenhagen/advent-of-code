@@ -1,5 +1,5 @@
 group = "io.github.ekoppenhagen"
-version = "2024.10.0"
+version = "2024.10.1"
 
 repositories(RepositoryHandler::mavenCentral)
 kotlin { jvmToolchain(21) }

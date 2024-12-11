@@ -2,26 +2,26 @@ package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Location
-import io.github.ekoppenhagen.aoc.extensions.toGrid
+import io.github.ekoppenhagen.aoc.extensions.toNumberGrid
 
 // https://adventofcode.com/2024/day/10
 class Day10 : AbstractAocDay(year = 2024, day = 10) {
 
     override fun solvePart1(topographicMap: List<String>) =
-        calculateTrailheadScores(topographicMap.toGrid()).flatten().sum()
+        calculateTrailheadScores(topographicMap.toNumberGrid()).flatten().sum()
 
-    private fun calculateTrailheadScores(topographicMap: Array<Array<String>>) =
+    private fun calculateTrailheadScores(topographicMap: Array<Array<Int>>) =
         topographicMap.mapIndexed { rowIndex, row ->
             row.mapIndexed { columnIndex, height ->
-                if (!isTrailhead(height.toInt())) 0
+                if (!isTrailhead(height)) 0
                 else calculateTrailheadScore(rowIndex, columnIndex, topographicMap)
             }
         }
 
-    private fun calculateTrailheadScore(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<String>>) =
+    private fun calculateTrailheadScore(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>) =
         findHikingPathsToReachablePeaks(rowIndex, columnIndex, topographicMap).map { it.last() }.toSet().size
 
-    private fun getNextHeight(topographicMap: Array<Array<String>>, rowIndex: Int, columnIndex: Int) =
+    private fun getNextHeight(topographicMap: Array<Array<Int>>, rowIndex: Int, columnIndex: Int) =
         topographicMap.getOrNull(rowIndex)?.getOrNull(columnIndex)?.toInt()
 
     private fun isOutsideOfMap(height: Int?) =
@@ -37,9 +37,9 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
         currentHeight == previousHeight + 1
 
     override fun solvePart2(topographicMap: List<String>) =
-        calculateNumberOfPathsForAllTrailheads(topographicMap.toGrid()).flatten().sum()
+        calculateNumberOfPathsForAllTrailheads(topographicMap.toNumberGrid()).flatten().sum()
 
-    private fun calculateNumberOfPathsForAllTrailheads(topographicMap: Array<Array<String>>) =
+    private fun calculateNumberOfPathsForAllTrailheads(topographicMap: Array<Array<Int>>) =
         topographicMap.mapIndexed { rowIndex, row ->
             row.mapIndexed { columnIndex, height ->
                 if (!isTrailhead(height.toInt())) 0
@@ -47,10 +47,10 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
             }
         }
 
-    private fun calculateNumberOfPaths(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<String>>) =
+    private fun calculateNumberOfPaths(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>) =
         findHikingPathsToReachablePeaks(rowIndex, columnIndex, topographicMap).size
 
-    private fun findNumberOfPaths(currentHeight: Int?, previousHeight: Int, rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<String>>): Int =
+    private fun findNumberOfPaths(currentHeight: Int?, previousHeight: Int, rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>): Int =
         when {
             isOutsideOfMap(currentHeight) -> 0
             !isGradualUphill(previousHeight, currentHeight!!) -> 0
@@ -61,7 +61,7 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
                 findNumberOfPaths(getNextHeight(topographicMap, rowIndex, columnIndex - 1), currentHeight, rowIndex, columnIndex - 1, topographicMap)
         }
 
-    private fun findHikingPathsToReachablePeaks(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<String>>) =
+    private fun findHikingPathsToReachablePeaks(rowIndex: Int, columnIndex: Int, topographicMap: Array<Array<Int>>) =
         mutableListOf<List<Location>>().apply { findHikingPathsToReachablePeaks(-1, 0, rowIndex, columnIndex, topographicMap) }
 
     @Suppress("LongParameterList")
@@ -70,7 +70,7 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
         previousHeight: Int,
         rowIndex: Int,
         columnIndex: Int,
-        topographicMap: Array<Array<String>>,
+        topographicMap: Array<Array<Int>>,
         currentRoute: List<Location> = emptyList(),
     ) {
         when {
@@ -81,11 +81,12 @@ class Day10 : AbstractAocDay(year = 2024, day = 10) {
         }
     }
 
+    @Suppress("LongMethod")
     private fun MutableList<List<Location>>.walkInAllDirections(
         currentHeight: Int,
         rowIndex: Int,
         columnIndex: Int,
-        topographicMap: Array<Array<String>>,
+        topographicMap: Array<Array<Int>>,
         currentRoute: List<Location>,
     ) {
         findHikingPathsToReachablePeaks(

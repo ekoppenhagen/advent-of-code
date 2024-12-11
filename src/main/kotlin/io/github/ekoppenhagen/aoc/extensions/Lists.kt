@@ -14,10 +14,17 @@ fun <E> List<List<E>>.rotateClockwise(): MutableList<MutableList<E>> {
     }
 }
 
-fun List<String>.toGrid() =
+fun List<String>.toCharacterGrid() =
     Array(size) { rowIndex ->
         Array(this.firstOrNull()?.length ?: 0) { columnIndex ->
-            "${this[rowIndex][columnIndex]}"
+            this[rowIndex][columnIndex]
+        }
+    }
+
+fun List<String>.toNumberGrid() =
+    Array(size) { rowIndex ->
+        Array(this.firstOrNull()?.length ?: 0) { columnIndex ->
+            this[rowIndex][columnIndex].digitToInt()
         }
     }
 
