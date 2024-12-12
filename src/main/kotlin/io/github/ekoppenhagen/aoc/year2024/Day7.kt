@@ -4,7 +4,10 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.concat
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
-class Day7 : AbstractAocDay(day = 7) {
+class Day7 : AbstractAocDay(
+    exampleResultPart1 = 3749,
+    exampleResultPart2 = 11_387,
+) {
 
     override fun solvePart1(calibrationEquations: List<String>) =
         getTestValuesOfValidEquations(calibrationEquations).sum()

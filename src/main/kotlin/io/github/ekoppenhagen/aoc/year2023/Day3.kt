@@ -4,7 +4,10 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Location
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbersWithIndex
 
-class Day3 : AbstractAocDay(day = 3) {
+class Day3 : AbstractAocDay(
+    exampleResultPart1 = 4361,
+    exampleResultPart2 = 467_835,
+) {
 
     override fun solvePart1(engineSchematic: List<String>) =
         getSumOfPartNumbers(engineSchematic)

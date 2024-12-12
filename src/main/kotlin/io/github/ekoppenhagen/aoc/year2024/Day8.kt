@@ -4,7 +4,10 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
 
-class Day8 : AbstractAocDay(day = 8) {
+class Day8 : AbstractAocDay(
+    exampleResultPart1 = 14,
+    exampleResultPart2 = 34,
+) {
 
     override fun solvePart1(cityAntennaMap: List<String>) =
         findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap).size

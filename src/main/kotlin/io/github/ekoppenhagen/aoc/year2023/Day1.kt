@@ -6,7 +6,10 @@ import io.github.ekoppenhagen.aoc.extensions.toListOfDigits
 import io.github.ekoppenhagen.aoc.extensions.toListOfDigitsWithSpelledOutNumbers
 import io.github.ekoppenhagen.aoc.extensions.toPairOfFirstAndLastElement
 
-class Day1 : AbstractAocDay(day = 1) {
+class Day1 : AbstractAocDay(
+    exampleResultPart1 = 142,
+    exampleResultPart2 = 281,
+) {
 
     override fun solvePart1(lines: List<String>) =
         getEachCalibrationValue(lines).sum()

@@ -2,7 +2,10 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
-class Day5 : AbstractAocDay(day = 5) {
+class Day5 : AbstractAocDay(
+    exampleResultPart1 = 35,
+    exampleResultPart2 = 46,
+) {
 
     override fun solvePart1(lines: List<String>) =
         getLowestLocationNumbers(lines).min()

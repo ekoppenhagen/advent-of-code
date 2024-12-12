@@ -4,7 +4,10 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.removeLastWhile
 import java.util.*
 
-class Day9 : AbstractAocDay(day = 9) {
+class Day9 : AbstractAocDay(
+    exampleResultPart1 = 1928,
+    exampleResultPart2 = 2858,
+) {
 
     override fun solvePart1(discMap: List<String>) =
         calculateFilesystemChecksumOfRearrangedFiles(discMap.first())

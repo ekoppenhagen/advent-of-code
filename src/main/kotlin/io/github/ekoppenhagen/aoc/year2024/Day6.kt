@@ -9,7 +9,10 @@ import io.github.ekoppenhagen.aoc.common.Direction.UP
 import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
 
-class Day6 : AbstractAocDay(day = 6) {
+class Day6 : AbstractAocDay(
+    exampleResultPart1 = 41,
+    exampleResultPart2 = 6,
+) {
 
     override fun solvePart1(labMap: List<String>) =
         calculateNumberOfDistinctPositionsOfGuardRoute(Grid(labMap))
