@@ -18,7 +18,10 @@ data class Grid(
         var columnIndex = 0
         return lines.map { line ->
             line.map { character ->
-                transform(rowIndex++, columnIndex++, character)
+                transform(rowIndex, columnIndex++, character)
+            }.also {
+                rowIndex++
+                columnIndex = 0
             }
         }
     }
@@ -37,7 +40,10 @@ data class Grid(
         var columnIndex = 0
         return lines.forEach { line ->
             line.forEach { character ->
-                action(rowIndex++, columnIndex++, character)
+                action(rowIndex, columnIndex++, character)
+            }.also {
+                rowIndex++
+                columnIndex = 0
             }
         }
     }
