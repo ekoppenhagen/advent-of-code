@@ -33,7 +33,7 @@ class Day5 : AbstractAocDay(
     private fun getRatioSection(ratio: String, lines: List<String>): List<Triple<Long, Long, Long>> {
         val sectionStart = lines.subList(lines.indexOf("$ratio map:") + 1, lines.size)
         return sectionStart
-            .take(sectionStart.indexOf("").let { if (it != -1) it else sectionStart.size } + 1)
+            .take(sectionStart.indexOf("").let { if (it != -1) it else sectionStart.size })
             .map {
                 val information = it.split(" ")
                 Triple(information[1].toLong(), information[0].toLong(), information[2].toLong())
@@ -76,7 +76,7 @@ class Day5 : AbstractAocDay(
 
     private fun getRangeAndKeys(section: String, lines: List<String>): List<Triple<Long, Long, Long>> {
         val sectionStart = lines.subList(lines.indexOf("$section map:") + 1, lines.size)
-        return sectionStart.take(sectionStart.indexOf("").let { if (it != -1) it else sectionStart.size } + 1)
+        return sectionStart.take(sectionStart.indexOf("").let { if (it != -1) it else sectionStart.size })
             .map {
                 val information = it.split(" ")
                 Triple(information[0].toLong(), information[0].toLong() + information[2].toLong() - 1L, information[1].toLong())

@@ -24,7 +24,7 @@ class Day5 : AbstractAocDay(
         rawOrderingRule.getAllNumbers().let { it[0] to it[1] }
 
     private fun getOrderingRuleLines(pageOrderingRulesAndUpdates: List<String>) =
-        pageOrderingRulesAndUpdates.take(pageOrderingRulesAndUpdates.indexOf("") + 1)
+        pageOrderingRulesAndUpdates.take(pageOrderingRulesAndUpdates.indexOf(""))
 
     private fun extractUpdates(pageOrderingRulesAndUpdates: List<String>) =
         getUpdateLines(pageOrderingRulesAndUpdates).map(::parseUpdate)
