@@ -7,10 +7,6 @@ class Day2 : AbstractAocDay(
     exampleResultPart2 = 2286,
 ) {
 
-    private val redCubes = 12
-    private val greenCubes = 13
-    private val blueCubes = 14
-
     override fun solvePart1(rawGames: List<String>) =
         getSumOfIdsOfPossibleGames(rawGames)
 
@@ -41,9 +37,9 @@ class Day2 : AbstractAocDay(
         getAllShowcases(rawGame).map { createMapOfCubesInShowcase(toShowcase(it)) }
 
     private fun isBelowCubeLimit(maxCubeMap: Map<String, Int>) =
-        maxCubeMap.getOrDefault("red", redCubes + 1) <= redCubes &&
-            maxCubeMap.getOrDefault("green", greenCubes + 1) <= greenCubes &&
-            maxCubeMap.getOrDefault("blue", blueCubes + 1) <= blueCubes
+        maxCubeMap.getOrDefault("red", 0) <= NUMBER_OF_RED_CUBES &&
+            maxCubeMap.getOrDefault("green", 0) <= NUMBER_OF_GREEN_CUBES &&
+            maxCubeMap.getOrDefault("blue", 0) <= NUMBER_OF_BLUE_CUBES
 
     private fun getAllShowcases(rawGame: String) =
         rawGame.substringAfter(": ").split("; ")
@@ -60,4 +56,11 @@ class Day2 : AbstractAocDay(
     private fun getSumOfPowerOfGames(rawGames: List<String>) =
         rawGames.map { createMaxCubeMap(it) }
             .sumOf { it.values.reduce(Int::times) }
+
+    private companion object {
+
+        private const val NUMBER_OF_RED_CUBES = 12
+        private const val NUMBER_OF_GREEN_CUBES = 13
+        private const val NUMBER_OF_BLUE_CUBES = 14
+    }
 }

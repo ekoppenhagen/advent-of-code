@@ -7,9 +7,6 @@ class Day7 : AbstractAocDay(
     exampleResultPart2 = 5905,
 ) {
 
-    private val playingCards = charArrayOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
-    private val playingCardsWithJokers = charArrayOf('A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J')
-
     override fun solvePart1(rawHands: List<String>) =
         getCamelCardsWinnings(rawHands)
 
@@ -119,5 +116,11 @@ class Day7 : AbstractAocDay(
 
             return 0
         }
+    }
+
+    private companion object {
+
+        private val playingCards = charArrayOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
+        private val playingCardsWithJokers = charArrayOf('A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J')
     }
 }

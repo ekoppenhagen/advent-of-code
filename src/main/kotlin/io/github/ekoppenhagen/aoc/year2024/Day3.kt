@@ -33,7 +33,7 @@ class Day3 : AbstractAocDay(
     override fun solvePart2(corruptedMemoryDump: List<String>) =
         calculateSumOfAllMultiplicationResultsWithConditionals(corruptedMemoryDump)
 
-    private var isEnabled = true
+    private var isDisabled = false
 
     private fun calculateSumOfAllMultiplicationResultsWithConditionals(corruptedMemoryDump: List<String>) =
         findAllMultiplicationsWithConditionals(corruptedMemoryDump).sumOf(::addMultiplicationsOfCorruptedMemory)
@@ -49,10 +49,10 @@ class Day3 : AbstractAocDay(
 
     private fun filterDisabledMultiplications(multiplicationsAndConditionals: List<String>) =
         multiplicationsAndConditionals.filter { toEvaluate ->
-            (isMultiplication(toEvaluate) && isEnabled).also {
+            (isMultiplication(toEvaluate) && !isDisabled).also {
                 when {
-                    isEnablingConditional(toEvaluate) -> isEnabled = true
-                    isDisablingConditional(toEvaluate) -> isEnabled = false
+                    isEnablingConditional(toEvaluate) -> isDisabled = false
+                    isDisablingConditional(toEvaluate) -> isDisabled = true
                 }
             }
         }.map(::extractNumbers)
