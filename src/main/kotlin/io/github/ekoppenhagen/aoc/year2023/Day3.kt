@@ -21,7 +21,7 @@ class Day3 : AbstractAocDay(
     private fun getAllNumbers(engineSchematic: List<String>): List<Pair<Long, Location>> =
         mutableListOf<Pair<Long, Location>>().apply {
             engineSchematic.forEachIndexed { rowIndex, row ->
-                row.getAllNumbersWithIndex().map { Pair(it.first, Location(rowIndex, it.second)) }
+                addAll(row.getAllNumbersWithIndex().map { Pair(it.first, Location(rowIndex, it.second)) })
             }
         }
 
