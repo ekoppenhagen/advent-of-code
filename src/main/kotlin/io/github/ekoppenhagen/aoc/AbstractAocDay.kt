@@ -60,7 +60,7 @@ abstract class AbstractAocDay(
 
     private fun printExampleAndPartSolution(partNumber: Int, solvingAlgorithm: (List<String>) -> Any, expectedExampleResult: Number?) {
         solvingAlgorithm(readExampleFile(partNumber).lines()).also {
-            printExampleSolution("${solvingAlgorithm(readExampleFile(partNumber).lines())} ${validateResult(it, expectedExampleResult)}")
+            printExampleSolution("$it ${validateResult(it, expectedExampleResult)}")
             printPartSolutionWithRuntime(solvingAlgorithm)
         }
     }
