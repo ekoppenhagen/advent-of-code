@@ -2,7 +2,6 @@ package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.removeLastWhile
-import io.github.ekoppenhagen.aoc.extensions.toNumber
 import java.util.*
 
 // https://adventofcode.com/2024/day/9
@@ -26,10 +25,10 @@ class Day9 : AbstractAocDay(year = 2024, day = 9) {
         }
 
     private fun addFileBlocks(blockCounter: Char, fileId: Int, targetList: LinkedList<String>) =
-        repeat(blockCounter.toNumber()) { targetList.add("$fileId") }
+        repeat(blockCounter.digitToInt()) { targetList.add("$fileId") }
 
     private fun addFreeSpaceBlocks(blockCounter: Char, targetList: LinkedList<String>) =
-        repeat(blockCounter.toNumber()) { targetList.add(".") }
+        repeat(blockCounter.digitToInt()) { targetList.add(".") }
 
     private fun makeContiguousFreeSpace(fileBlockRepresentation: LinkedList<String>): LinkedList<String> =
         rearrangeFiles(ignoreEmptySpaceAtTheEnd(fileBlockRepresentation))
