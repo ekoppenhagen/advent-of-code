@@ -63,7 +63,7 @@ formatting:
   PropertyWrapping:
     maxLineLength: 160
   Wrapping:
-    active: false
+    maxLineLength: 160
 
 # https://detekt.dev/docs/rules/libraries
 # no rules defined, because we do not use the plugin
