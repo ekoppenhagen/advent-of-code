@@ -1,16 +1,50 @@
 package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
+import io.github.ekoppenhagen.aoc.common.Location
+import io.github.ekoppenhagen.aoc.extensions.getAllNumbersWithIndex
 
 class Day3 : AbstractAocDay(day = 3) {
 
     override fun solvePart1(engineSchematic: List<String>) =
-        "improved soon"
+        getSumOfPartNumbers(engineSchematic)
+
+    private fun getSumOfPartNumbers(engineSchematic: List<String>) =
+        getPartNumbers(engineSchematic).sum()
+
+    private fun getPartNumbers(engineSchematic: List<String>) =
+        filterPartNumbers(getAllNumbers(engineSchematic), getAllSymbols(engineSchematic)).map { it.first }
+
+    private fun getAllNumbers(engineSchematic: List<String>): List<Pair<Long, Location>> =
+        mutableListOf<Pair<Long, Location>>().apply {
+            engineSchematic.forEachIndexed { rowIndex, row ->
+                row.getAllNumbersWithIndex().map { Pair(it.first, Location(rowIndex, it.second)) }
+            }
+        }
+
+    private fun getAllSymbols(engineSchematic: List<String>) =
+        mutableListOf<Location>().apply {
+            engineSchematic.forEachIndexed { rowIndex, row ->
+                row.forEachIndexed { columnIndex, character ->
+                    if (isSymbol(character)) add(Location(rowIndex, columnIndex))
+                }
+            }
+        }
+
+    private fun isSymbol(character: Char) =
+        !character.isDigit() && character != '.'
+
+    private fun filterPartNumbers(numbers: List<Pair<Long, Location>>, symbols: List<Location>) =
+        numbers.filter { isNextToSymbol(it, symbols) }
+
+    private fun isNextToSymbol(numberWithCoordinates: Pair<Long, Location>, symbolCoordinates: List<Location>) =
+        symbolCoordinates.any {
+            it.row in (numberWithCoordinates.second.row - 1)..(numberWithCoordinates.second.row + 1) &&
+                it.column in (numberWithCoordinates.second.column - 1)..(numberWithCoordinates.second.column + "${numberWithCoordinates.first}".length)
+        }
 
     override fun solvePart2(lines: List<String>) =
-        lines.mapIndexed { lineIndex, line ->
-            getGearRatioSum(line, lineIndex, lines)
-        }.sum()
+        lines.mapIndexed { lineIndex, line -> getGearRatioSum(line, lineIndex, lines) }.sum()
 
     private fun getGearRatioSum(line: String, lineIndex: Int, lines: List<String>) =
         if (!line.contains("*")) 0

@@ -18,3 +18,8 @@ fun String.getAllNumbers() =
     Regex("(?<numbers>[0-9]+)").findAll(this)
         .mapNotNull { it.value.toLongOrNull() }
         .toList()
+
+fun String.getAllNumbersWithIndex() =
+    Regex("(?<numbers>[0-9]+)").findAll(this)
+        .map { it.value.toLong() to it.range.first }
+        .toList()
