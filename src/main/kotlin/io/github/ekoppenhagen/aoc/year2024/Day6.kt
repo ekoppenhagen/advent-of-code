@@ -6,21 +6,21 @@ import io.github.ekoppenhagen.aoc.common.Direction.DOWN
 import io.github.ekoppenhagen.aoc.common.Direction.LEFT
 import io.github.ekoppenhagen.aoc.common.Direction.RIGHT
 import io.github.ekoppenhagen.aoc.common.Direction.UP
+import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
-import io.github.ekoppenhagen.aoc.extensions.toCharacterGrid
 
 class Day6 : AbstractAocDay(day = 6) {
 
     override fun solvePart1(labMap: List<String>) =
-        calculateNumberOfDistinctPositionsOfGuardRoute(labMap.toCharacterGrid())
+        calculateNumberOfDistinctPositionsOfGuardRoute(Grid(labMap))
 
-    private fun calculateNumberOfDistinctPositionsOfGuardRoute(labGridMap: Array<CharArray>) =
+    private fun calculateNumberOfDistinctPositionsOfGuardRoute(labGridMap: Grid) =
         getAllPatrolTiles(labGridMap).size
 
-    private fun getAllPatrolTiles(labGridMap: Array<CharArray>) =
+    private fun getAllPatrolTiles(labGridMap: Grid) =
         mutableSetOf(getStartingPositionOfGuard(labGridMap)).apply { runPatrol(labGridMap, this) }
 
-    private fun runPatrol(labGridMap: Array<CharArray>, patrolTiles: MutableSet<Location>) {
+    private fun runPatrol(labGridMap: Grid, patrolTiles: MutableSet<Location>) {
         var currentGuardPosition = patrolTiles.first()
         var guardDirection = UP
         var nextGuardPosition = getNextPosition(currentGuardPosition, guardDirection)
@@ -31,19 +31,11 @@ class Day6 : AbstractAocDay(day = 6) {
         }
     }
 
-    @Suppress("UnnecessaryLet") // false positive
-    private fun getStartingPositionOfGuard(labGridMap: Array<CharArray>): Location =
-        labGridMap.let {
-            it.forEachIndexed { rowIndex, row ->
-                row.forEachIndexed { columnIndex, column ->
-                    if (column == '^') return Location(rowIndex, columnIndex)
-                }
-            }
-            Location(-1, -1)
-        }
+    private fun getStartingPositionOfGuard(labGridMap: Grid): Location =
+        labGridMap.firstLocationOf('^') ?: Location(-1, -1)
 
-    private fun isInsideLab(position: Location, labGridMap: Array<CharArray>) =
-        position.row in 0..<labGridMap.size && position.column in 0..<labGridMap.first().size
+    private fun isInsideLab(position: Location, labGridMap: Grid) =
+        position.row in 0..<labGridMap.rows && position.column in 0..<labGridMap.columns
 
     private fun getNextPosition(currentGuardPosition: Location, direction: Direction) =
         when (direction) {
@@ -53,8 +45,8 @@ class Day6 : AbstractAocDay(day = 6) {
             LEFT -> Location(currentGuardPosition.row, currentGuardPosition.column - 1)
         }
 
-    private fun isObstacle(position: Location, labGridMap: Array<CharArray>) =
-        labGridMap[position.row][position.column] == '#'
+    private fun isObstacle(location: Location, labGridMap: Grid) =
+        labGridMap.getOrNull(location) == '#'
 
     override fun solvePart2(labMap: List<String>) =
         "not implemented"

@@ -14,20 +14,6 @@ fun <E> List<List<E>>.rotateClockwise(): MutableList<MutableList<E>> {
     }
 }
 
-fun List<String>.toCharacterGrid() =
-    Array(size) { rowIndex ->
-        Array(this.firstOrNull()?.length ?: 0) { columnIndex ->
-            this[rowIndex][columnIndex]
-        }.toCharArray()
-    }
-
-fun List<String>.toNumberGrid() =
-    Array(size) { rowIndex ->
-        Array(this.firstOrNull()?.length ?: 0) { columnIndex ->
-            this[rowIndex][columnIndex].digitToInt()
-        }.toIntArray()
-    }
-
 fun <E> LinkedList<E>.removeLastWhile(predicate: (E) -> Boolean): LinkedList<E> {
     if (!isEmpty()) {
         val iterator = listIterator(size)

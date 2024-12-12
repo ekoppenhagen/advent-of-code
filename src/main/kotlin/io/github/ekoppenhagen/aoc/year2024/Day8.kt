@@ -1,8 +1,8 @@
 package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
+import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
-import io.github.ekoppenhagen.aoc.extensions.toCharacterGrid
 
 class Day8 : AbstractAocDay(day = 8) {
 
@@ -13,14 +13,12 @@ class Day8 : AbstractAocDay(day = 8) {
         findAllUniqueAntinodeLocations(cityAntennaMap).filter { isInsideMap(it, cityAntennaMap) }
 
     private fun findAllUniqueAntinodeLocations(cityAntennaMap: List<String>) =
-        findAllAntennasForFrequencies(cityAntennaMap.toCharacterGrid()).map(::calculateAllAntinodeLocations).flatten().toSet()
+        findAllAntennasForFrequencies(Grid(cityAntennaMap)).map(::calculateAllAntinodeLocations).flatten().toSet()
 
-    private fun findAllAntennasForFrequencies(cityAntennaMap: Array<CharArray>) =
+    private fun findAllAntennasForFrequencies(cityAntennaMap: Grid) =
         mutableMapOf<Char, MutableList<Location>>().apply {
-            cityAntennaMap.forEachIndexed { rowIndex, row ->
-                row.forEachIndexed { columnIndex, frequency ->
-                    if (frequency != '.') addAntennaOfFrequency(this, frequency, rowIndex, columnIndex)
-                }
+            cityAntennaMap.forEachIndexed { rowIndex, columnIndex, frequency ->
+                if (frequency != '.') addAntennaOfFrequency(this, frequency, rowIndex, columnIndex)
             }
         }
 
@@ -63,7 +61,7 @@ class Day8 : AbstractAocDay(day = 8) {
         findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap).size
 
     private fun findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap: List<String>) =
-        findAllAntennasForFrequencies(cityAntennaMap.toCharacterGrid())
+        findAllAntennasForFrequencies(Grid(cityAntennaMap))
             .map { calculateAllAntinodeLocationsWithResonantHarmonics(it, cityAntennaMap) }
             .flatten()
             .toSet()
