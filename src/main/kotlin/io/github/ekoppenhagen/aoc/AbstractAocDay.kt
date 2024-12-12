@@ -2,22 +2,23 @@ package io.github.ekoppenhagen.aoc
 
 import java.io.File
 
-abstract class AbstractAocDay(
-    val year: Int,
-    val day: Int,
-) {
+abstract class AbstractAocDay(private val day: Int) {
+
+    private val year = this.javaClass.packageName.dropWhile { !it.isDigit() }.toInt()
+
+    private val adventOfCode = """
+            ___       __                 __           ____  ______          __   
+           /   | ____/ /   _____  ____  / /_   ____  / __/ / ____/___  ____/ /__ 
+          / /| |/ __  / | / / _ \/ __ \/ __/  / __ \/ /_  / /   / __ \/ __  / _ \
+         / ___ / /_/ /| |/ /  __/ / / / /_   / /_/ / __/ / /___/ /_/ / /_/ /  __/
+        /_/  |_\__,_/ |___/\___/_/ /_/\__/   \____/_/    \____/\____/\__,_/\___/        
+    """.trimIndent()
 
     init {
+        printEmptyLine()
         printAdventOfCode()
-        printDayInfo()
-    }
-
-    private fun printAdventOfCode() {
-        println("\n---Advent of Code---")
-    }
-
-    private fun printDayInfo() {
-        println("day $day of year $year\n")
+        printDayInformation()
+        printEmptyLine()
     }
 
     abstract fun solvePart1(lines: List<String>): Any
@@ -41,17 +42,21 @@ abstract class AbstractAocDay(
         printEmptyLine()
     }
 
-    private fun printPart(part: Int) {
-        println("part $part")
+    private fun printAdventOfCode() = println(adventOfCode)
+
+    private fun printDayInformation() {
+        val dateText = "day $day of year $year"
+        val urlText = "https://adventofcode.com/$year/day/$day"
+        val existingTextLength = (dateText.length + urlText.length + 2)
+        val fillingSpaces = " ".repeat(adventOfCode.indexOfFirst { it == '\n' } - existingTextLength)
+        println("$dateText$fillingSpaces$urlText")
     }
 
-    private fun printExampleSolution(solution: Any) {
-        println("example:\t$solution")
-    }
+    private fun printPart(part: Int) = println("part $part")
 
-    private fun printPartSolution(solution: Any) {
-        println("problem:\t$solution")
-    }
+    private fun printExampleSolution(solution: Any) = println("example:\t$solution")
+
+    private fun printPartSolution(solution: Any) = println("problem:\t$solution")
 
     private fun printEmptyLine() = println()
 

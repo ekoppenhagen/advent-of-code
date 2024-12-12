@@ -3,8 +3,7 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.toCharacterGrid
 
-// https://adventofcode.com/2024/day/4
-class Day4 : AbstractAocDay(year = 2024, day = 4) {
+class Day4 : AbstractAocDay(day = 4) {
 
     override fun solvePart1(wordSearch: List<String>) =
         countAllAppearancesOfXmas(wordSearch)

@@ -2,8 +2,7 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
-// https://adventofcode.com/2023/day/7
-class Day7 : AbstractAocDay(year = 2023, day = 7) {
+class Day7 : AbstractAocDay(day = 7) {
 
     private val playingCards = charArrayOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
     private val playingCardsWithJokers = charArrayOf('A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J')

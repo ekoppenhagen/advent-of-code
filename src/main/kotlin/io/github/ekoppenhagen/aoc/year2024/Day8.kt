@@ -4,8 +4,7 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Location
 import io.github.ekoppenhagen.aoc.extensions.toCharacterGrid
 
-// https://adventofcode.com/2024/day/8
-class Day8 : AbstractAocDay(year = 2024, day = 8) {
+class Day8 : AbstractAocDay(day = 8) {
 
     override fun solvePart1(cityAntennaMap: List<String>) =
         findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap).size

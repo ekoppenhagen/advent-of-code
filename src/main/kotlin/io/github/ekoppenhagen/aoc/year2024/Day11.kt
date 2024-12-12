@@ -3,8 +3,7 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
-// https://adventofcode.com/2024/day/11
-class Day11 : AbstractAocDay(year = 2024, day = 11) {
+class Day11 : AbstractAocDay(day = 11) {
 
     override fun solvePart1(stoneEngravings: List<String>) =
         getTotalNumberOfEvolvingStones(getInitialStoneEngravingNumbers(stoneEngravings, blinks = 25), createCache())

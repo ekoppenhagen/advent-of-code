@@ -4,8 +4,7 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Location
 import io.github.ekoppenhagen.aoc.extensions.toNumberGrid
 
-// https://adventofcode.com/2024/day/10
-class Day10 : AbstractAocDay(year = 2024, day = 10) {
+class Day10 : AbstractAocDay(day = 10) {
 
     override fun solvePart1(topographicMap: List<String>) =
         calculateTrailheadScores(topographicMap.toNumberGrid()).flatten().sum()

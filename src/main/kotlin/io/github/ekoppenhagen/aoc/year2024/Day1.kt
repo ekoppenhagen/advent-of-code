@@ -5,8 +5,7 @@ import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 import io.github.ekoppenhagen.aoc.extensions.rotateClockwise
 import kotlin.math.abs
 
-// https://adventofcode.com/2024/day/1
-class Day1 : AbstractAocDay(year = 2024, day = 1) {
+class Day1 : AbstractAocDay(day = 1) {
 
     override fun solvePart1(lines: List<String>) =
         calculateTotalDistances(toSortedListOfLocationIds(lines))

@@ -6,8 +6,7 @@ import io.github.ekoppenhagen.aoc.extensions.toListOfDigits
 import io.github.ekoppenhagen.aoc.extensions.toListOfDigitsWithSpelledOutNumbers
 import io.github.ekoppenhagen.aoc.extensions.toPairOfFirstAndLastElement
 
-// https://adventofcode.com/2023/day/1
-class Day1 : AbstractAocDay(year = 2023, day = 1) {
+class Day1 : AbstractAocDay(day = 1) {
 
     override fun solvePart1(lines: List<String>) =
         getEachCalibrationValue(lines).sum()

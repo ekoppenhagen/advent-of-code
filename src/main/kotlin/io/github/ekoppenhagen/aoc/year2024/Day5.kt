@@ -3,8 +3,7 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
-// https://adventofcode.com/2024/day/5
-class Day5 : AbstractAocDay(year = 2024, day = 5) {
+class Day5 : AbstractAocDay(day = 5) {
 
     override fun solvePart1(pageOrderingRulesAndUpdates: List<String>) =
         calculateSumOfAllValidUpdateMiddlePages(pageOrderingRulesAndUpdates)

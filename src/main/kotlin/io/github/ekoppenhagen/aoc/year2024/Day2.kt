@@ -3,8 +3,7 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
-// https://adventofcode.com/2024/day/2
-class Day2 : AbstractAocDay(year = 2024, day = 2) {
+class Day2 : AbstractAocDay(day = 2) {
 
     override fun solvePart1(rawData: List<String>) =
         getNumberOfSafeReports(rawData, isProblemDampenerAvailable = false)

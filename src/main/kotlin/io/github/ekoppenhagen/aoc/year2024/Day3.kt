@@ -2,8 +2,7 @@ package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
-// https://adventofcode.com/2024/day/4
-class Day3 : AbstractAocDay(year = 2024, day = 3) {
+class Day3 : AbstractAocDay(day = 3) {
 
     override fun solvePart1(corruptedMemoryDump: List<String>) =
         calculateSumOfAllMultiplicationResults(corruptedMemoryDump)

@@ -2,8 +2,7 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
-// https://adventofcode.com/2023/day/4
-class Day4 : AbstractAocDay(year = 2023, day = 4) {
+class Day4 : AbstractAocDay(day = 4) {
 
     override fun solvePart1(scratchCards: List<String>) =
         scratchCards.sumOf(::getPointsForScratchCards)

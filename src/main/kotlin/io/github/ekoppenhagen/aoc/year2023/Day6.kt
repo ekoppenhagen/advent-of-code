@@ -2,8 +2,7 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
-// https://adventofcode.com/2023/day/6
-class Day6 : AbstractAocDay(year = 2023, day = 6) {
+class Day6 : AbstractAocDay(day = 6) {
 
     override fun solvePart1(lines: List<String>) =
         mapToRace(lines)

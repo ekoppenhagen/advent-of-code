@@ -2,8 +2,7 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
-// https://adventofcode.com/2023/day/2
-class Day2 : AbstractAocDay(year = 2023, day = 2) {
+class Day2 : AbstractAocDay(day = 2) {
 
     private val redCubes = 12
     private val greenCubes = 13
