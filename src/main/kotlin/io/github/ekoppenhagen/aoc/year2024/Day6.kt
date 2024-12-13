@@ -38,7 +38,7 @@ class Day6 : AbstractAocDay(
         labGridMap.firstLocationOf('^') ?: Location(-1, -1)
 
     private fun isInsideLab(position: Location, labGridMap: Grid) =
-        position.row in 0..<labGridMap.rows && position.column in 0..<labGridMap.columns
+        position.row in 0 until labGridMap.rows && position.column in 0 until labGridMap.columns
 
     private fun getNextPosition(currentGuardPosition: Location, direction: Direction) =
         when (direction) {
