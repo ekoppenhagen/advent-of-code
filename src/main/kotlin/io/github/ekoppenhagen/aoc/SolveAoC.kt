@@ -1,7 +1,7 @@
 package io.github.ekoppenhagen.aoc
 
-import io.github.ekoppenhagen.aoc.year2024.Day13
+import io.github.ekoppenhagen.aoc.year2023.Day4
 
 fun main() {
-    Day13() // set your day here
+    Day4() // set your day here
 }

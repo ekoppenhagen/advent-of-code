@@ -33,36 +33,27 @@ class Day4 : AbstractAocDay(
     }
 
     override fun solvePart2(scratchCards: List<String>) =
-        getAllScratchCards(scratchCards).size
+        getTotalNumberOfScratchCards(scratchCards.reversed(), createCache())
 
-    private fun getAllScratchCards(scratchCards: List<String>): List<String> {
-        val completeScratchCardList = scratchCards.toMutableList()
-        var currentScratchCards = scratchCards
-        var newScratchCards: List<String>
+    private fun createCache() = mutableMapOf<Int, Int>()
 
-        while (getAdditionalWonCards(currentScratchCards, scratchCards).also { newScratchCards = it }.isNotEmpty()) {
-            currentScratchCards = newScratchCards
-            completeScratchCardList.addAll(newScratchCards)
-        }
+    private fun getTotalNumberOfScratchCards(scratchCards: List<String>, gameWinningsCache: MutableMap<Int, Int>) =
+        scratchCards.mapIndexed { gameIdOffset, scratchCard ->
+            getNumberOfWinningCards(scratchCard, scratchCards.size - gameIdOffset, gameWinningsCache)
+        }.sum()
 
-        return completeScratchCardList
-    }
+    private fun getNumberOfWinningCards(scratchCard: String, gameId: Int, gameWinningsCache: MutableMap<Int, Int>): Int =
+        gameWinningsCache[gameId] ?: calculateNumberOfWinnings(getWinningNumbers(scratchCard), getDrawnNumbers(scratchCard)).let {
+            if (hasNoWinnings(it)) 1
+            else getWinningsOfOtherCards(gameId + 1..gameId + it, gameWinningsCache)
+        }.also { gameWinningsCache[gameId] = it }
 
-    private fun getAdditionalWonCards(currentCards: List<String>, referenceCards: List<String>): List<String> {
-        val additionalCards = mutableListOf<String>()
-        currentCards.forEach {
-            var currentCardNumberIndex = getCardNumber(it) - 1
-            repeat(calculateWinnings(getWinningNumbers(it), getDrawnNumbers(it))) {
-                currentCardNumberIndex++
-                additionalCards.add(referenceCards[currentCardNumberIndex])
-            }
-        }
-        return additionalCards
-    }
-
-    private fun getCardNumber(scratchCard: String) =
-        scratchCard.substringAfter("Card").substringBefore(":").trim().toInt()
-
-    private fun calculateWinnings(winningNumbers: List<Int>, drawnNumbers: List<Int>) =
+    private fun calculateNumberOfWinnings(winningNumbers: List<Int>, drawnNumbers: List<Int>): Int =
         drawnNumbers.map { if (winningNumbers.contains(it)) 1 else 0 }.sum()
+
+    private fun hasNoWinnings(numberOfWinnings: Int) =
+        numberOfWinnings == 0
+
+    private fun getWinningsOfOtherCards(gameIds: IntRange, gameWinningsCache: MutableMap<Int, Int>) =
+        gameIds.sumOf { gameWinningsCache[it]!! } + 1
 }
