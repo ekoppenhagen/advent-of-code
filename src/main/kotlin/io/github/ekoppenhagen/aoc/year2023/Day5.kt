@@ -1,85 +1,86 @@
 package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
+import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
 class Day5 : AbstractAocDay(
     exampleResultPart1 = 35,
     exampleResultPart2 = 46,
 ) {
 
-    override fun solvePart1(lines: List<String>) =
-        getLowestLocationNumbers(lines).min()
+    override fun solvePart1(rawAlmanac: List<String>) =
+        Almanac(rawAlmanac).findLowestLocationNumber(getSeeds(rawAlmanac))
 
-    private fun getLowestLocationNumbers(lines: List<String>): List<Long> =
-        getSeeds(lines.first()).map { getLowestLocationNumber(it, lines) }
+    private fun getSeeds(rawAlmanac: List<String>) = rawAlmanac.first().getAllNumbers()
 
-    private fun getSeeds(seeds: String): List<Long> =
-        seeds.substringAfter("seeds: ").split(" ").map(String::toLong)
+    override fun solvePart2(rawAlmanac: List<String>) =
+        Almanac(rawAlmanac).findMatchingSeed(getSeedsWithRanges(rawAlmanac))
 
-    private fun getLowestLocationNumber(seed: Long, lines: List<String>) =
-        getValueFromSection(seed, getRatioSection("seed-to-soil", lines))
-            .let { getValueFromSection(it, getRatioSection("soil-to-fertilizer", lines)) }
-            .let { getValueFromSection(it, getRatioSection("fertilizer-to-water", lines)) }
-            .let { getValueFromSection(it, getRatioSection("water-to-light", lines)) }
-            .let { getValueFromSection(it, getRatioSection("light-to-temperature", lines)) }
-            .let { getValueFromSection(it, getRatioSection("temperature-to-humidity", lines)) }
-            .let { getValueFromSection(it, getRatioSection("humidity-to-location", lines)) }
+    private fun getSeedsWithRanges(rawAlmanac: List<String>) =
+        rawAlmanac.first().getAllNumbers().chunked(2).map { it.first()..it.last() + it.first() }
 
-    private fun getValueFromSection(key: Long, ratioSection: List<Triple<Long, Long, Long>>): Long {
-        val potentialRatio = ratioSection.filter { it.first <= key }.maxByOrNull(Triple<Long, Long, Long>::first)
-        return if (potentialRatio != null && key <= potentialRatio.first + potentialRatio.third) potentialRatio.second + key - potentialRatio.first else key
-    }
+    private class Almanac(rawAlmanac: List<String>) {
 
-    private fun getRatioSection(ratio: String, lines: List<String>): List<Triple<Long, Long, Long>> {
-        val sectionStart = lines.subList(lines.indexOf("$ratio map:") + 1, lines.size)
-        return sectionStart
-            .take(sectionStart.indexOf("").let { if (it != -1) it else sectionStart.size })
-            .map {
-                val information = it.split(" ")
-                Triple(information[1].toLong(), information[0].toLong(), information[2].toLong())
+        fun findLowestLocationNumber(seeds: List<Long>) =
+            seeds.minOf {
+                sections.fold(it) { value, almanacSection -> almanacSection.getDestinationForValue(value) }
             }
-    }
 
-    override fun solvePart2(lines: List<String>): Long {
-        val seedRanges = getSeedRanges(lines.first())
+        fun findMatchingSeed(seeds: List<LongRange>) =
+            generateSequence(0L) { it + 1 }
+                .first {
+                    sectionsReversed.fold(it) { value, almanacSection -> almanacSection.getValueForDestination(value) }
+                        .let { seed -> seeds.any { seed in it } }
+                }
 
-        var minimalLocationValue = 0L
-        while (true) {
-            if (isInSeedRange(getSeedForLocation(minimalLocationValue, lines), seedRanges)) return minimalLocationValue
-            minimalLocationValue++
+        private val sections = listOf(
+            AlmanacSection("seed-to-soil", rawAlmanac),
+            AlmanacSection("soil-to-fertilizer", rawAlmanac),
+            AlmanacSection("fertilizer-to-water", rawAlmanac),
+            AlmanacSection("water-to-light", rawAlmanac),
+            AlmanacSection("light-to-temperature", rawAlmanac),
+            AlmanacSection("temperature-to-humidity", rawAlmanac),
+            AlmanacSection("humidity-to-location", rawAlmanac),
+        )
+
+        private val sectionsReversed = sections.reversed()
+
+        private class AlmanacSection(sectionName: String, private val rawAlmanac: List<String>) {
+
+            private val sectionContent = getAlmanacSectionRatios(sectionName)
+
+            fun getDestinationForValue(value: Long) =
+                sectionContent.firstOrNull { it.isValueInSection(value) }?.getDestinationForValue(value) ?: value
+
+            fun getValueForDestination(destination: Long) =
+                sectionContent.firstOrNull { it.isDestinationInSection(destination) }?.getValueForDestination(destination) ?: destination
+
+            private fun getAlmanacSectionRatios(sectionName: String) =
+                getSectionRatios(sectionName).map { almanacEntry ->
+                    almanacEntry.getAllNumbers().let {
+                        AlmanacSectionRatio(it[0].toLong(), it[1].toLong(), it[2].toLong())
+                    }
+                }
+
+            private fun getSectionRatios(sectionName: String) =
+                rawAlmanac
+                    .drop(rawAlmanac.indexOf("$sectionName map:") + 1)
+                    .takeWhile { it != ("") }
         }
-    }
 
-    private fun getSeedRanges(seedRanges: String): List<Pair<Long, Long>> =
-        seedRanges.substringAfter("seeds: ")
-            .split(" ")
-            .chunked(2)
-            .map { it[0].toLong() to it[0].toLong() + it[1].toLong() - 1 }
+        private data class AlmanacSectionRatio(
+            private val destinationRangeStart: Long,
+            private val sourceRangeStart: Long,
+            private val rangeLength: Long,
+        ) {
 
-    private fun isInSeedRange(seedForLocation: Long, seedRanges: List<Pair<Long, Long>>) =
-        seedRanges.any { it.first <= seedForLocation && it.second >= seedForLocation }
+            fun isValueInSection(value: Long) = sourceRangeStart <= value && value < (sourceRangeStart + rangeLength)
 
-    private fun getSeedForLocation(location: Long, lines: List<String>) =
-        getRequiredValueForDesiredOutcome("humidity-to-location", lines, location)
-            .let { getRequiredValueForDesiredOutcome("temperature-to-humidity", lines, it) }
-            .let { getRequiredValueForDesiredOutcome("light-to-temperature", lines, it) }
-            .let { getRequiredValueForDesiredOutcome("water-to-light", lines, it) }
-            .let { getRequiredValueForDesiredOutcome("fertilizer-to-water", lines, it) }
-            .let { getRequiredValueForDesiredOutcome("soil-to-fertilizer", lines, it) }
-            .let { getRequiredValueForDesiredOutcome("seed-to-soil", lines, it) }
+            fun isDestinationInSection(destination: Long) = destinationRangeStart <= destination && destination < (destinationRangeStart + rangeLength)
 
-    private fun getRequiredValueForDesiredOutcome(section: String, lines: List<String>, outcome: Long): Long =
-        getRangeAndKeys(section, lines)
-            .firstOrNull { it.first <= outcome && it.second >= outcome }
-            ?.let { it.third + outcome - it.first }
-            ?: outcome
+            fun getDestinationForValue(value: Long) = destinationRangeStart + (value - sourceRangeStart)
 
-    private fun getRangeAndKeys(section: String, lines: List<String>): List<Triple<Long, Long, Long>> {
-        val sectionStart = lines.subList(lines.indexOf("$section map:") + 1, lines.size)
-        return sectionStart.take(sectionStart.indexOf("").let { if (it != -1) it else sectionStart.size })
-            .map {
-                val information = it.split(" ")
-                Triple(information[0].toLong(), information[0].toLong() + information[2].toLong() - 1L, information[1].toLong())
-            }
+            fun getValueForDestination(destination: Long) = sourceRangeStart + (destination - destinationRangeStart)
+        }
     }
 }
