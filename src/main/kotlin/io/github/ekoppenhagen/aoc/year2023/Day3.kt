@@ -1,7 +1,7 @@
 package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
-import io.github.ekoppenhagen.aoc.common.Location
+import io.github.ekoppenhagen.aoc.common.Position
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbersWithIndex
 
 suspend fun main() {
@@ -22,18 +22,18 @@ class Day3 : AbstractAocDay(
     private fun getPartNumbers(engineSchematic: List<String>) =
         filterPartNumbers(getAllNumbers(engineSchematic), getAllSymbols(engineSchematic)).map { it.first }
 
-    private fun getAllNumbers(engineSchematic: List<String>): List<Pair<Long, Location>> =
-        mutableListOf<Pair<Long, Location>>().apply {
+    private fun getAllNumbers(engineSchematic: List<String>): List<Pair<Long, Position>> =
+        mutableListOf<Pair<Long, Position>>().apply {
             engineSchematic.forEachIndexed { rowIndex, row ->
-                addAll(row.getAllNumbersWithIndex().map { it.first to Location(rowIndex, it.second) })
+                addAll(row.getAllNumbersWithIndex().map { it.first to Position(rowIndex, it.second) })
             }
         }
 
     private fun getAllSymbols(engineSchematic: List<String>) =
-        mutableListOf<Location>().apply {
+        mutableListOf<Position>().apply {
             engineSchematic.forEachIndexed { rowIndex, row ->
                 row.forEachIndexed { columnIndex, character ->
-                    if (isSymbol(character)) add(Location(rowIndex, columnIndex))
+                    if (isSymbol(character)) add(Position(rowIndex, columnIndex))
                 }
             }
         }
@@ -41,10 +41,10 @@ class Day3 : AbstractAocDay(
     private fun isSymbol(character: Char) =
         !character.isDigit() && character != '.'
 
-    private fun filterPartNumbers(numbers: List<Pair<Long, Location>>, symbols: List<Location>) =
+    private fun filterPartNumbers(numbers: List<Pair<Long, Position>>, symbols: List<Position>) =
         numbers.filter { isNextToSymbol(it, symbols) }
 
-    private fun isNextToSymbol(numberWithCoordinates: Pair<Long, Location>, symbolCoordinates: List<Location>) =
+    private fun isNextToSymbol(numberWithCoordinates: Pair<Long, Position>, symbolCoordinates: List<Position>) =
         symbolCoordinates.any {
             it.row in (numberWithCoordinates.second.row - 1)..(numberWithCoordinates.second.row + 1) &&
                 it.column in (numberWithCoordinates.second.column - 1)..(numberWithCoordinates.second.column + "${numberWithCoordinates.first}".length)

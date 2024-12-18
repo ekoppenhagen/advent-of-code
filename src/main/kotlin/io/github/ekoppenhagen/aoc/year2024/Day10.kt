@@ -2,7 +2,7 @@ package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Grid
-import io.github.ekoppenhagen.aoc.common.Location
+import io.github.ekoppenhagen.aoc.common.Position
 
 suspend fun main() {
     Day10().solve()
@@ -29,22 +29,22 @@ class Day10 : AbstractAocDay(
         findHikingPathsToReachablePeaks(rowIndex, columnIndex, topographicMap).map { it.last() }.toSet().size
 
     private fun findHikingPathsToReachablePeaks(rowIndex: Int, columnIndex: Int, topographicMap: Grid) =
-        mutableListOf<List<Location>>().apply { findHikingPathsToReachablePeaks(0, -1, rowIndex, columnIndex, topographicMap) }
+        mutableListOf<List<Position>>().apply { findHikingPathsToReachablePeaks(0, -1, rowIndex, columnIndex, topographicMap) }
 
     @Suppress("LongParameterList", "CanBeNonNullable") // false positive due to recursion
-    private fun MutableList<List<Location>>.findHikingPathsToReachablePeaks(
+    private fun MutableList<List<Position>>.findHikingPathsToReachablePeaks(
         currentHeight: Int?,
         previousHeight: Int,
         rowIndex: Int,
         columnIndex: Int,
         topographicMap: Grid,
-        currentRoute: List<Location> = emptyList(),
+        currentRoute: List<Position> = emptyList(),
     ) {
         when {
             isOutsideOfMap(currentHeight) -> return
             !isGradualUphill(previousHeight, currentHeight!!) -> return
-            isPeak(currentHeight) -> this.add(currentRoute + Location(rowIndex, columnIndex))
-            else -> walkInAllDirections(currentHeight, rowIndex, columnIndex, topographicMap, currentRoute + Location(rowIndex, columnIndex))
+            isPeak(currentHeight) -> this.add(currentRoute + Position(rowIndex, columnIndex))
+            else -> walkInAllDirections(currentHeight, rowIndex, columnIndex, topographicMap, currentRoute + Position(rowIndex, columnIndex))
         }
     }
 
@@ -58,12 +58,12 @@ class Day10 : AbstractAocDay(
         height == 9
 
     @Suppress("LongMethod")
-    private fun MutableList<List<Location>>.walkInAllDirections(
+    private fun MutableList<List<Position>>.walkInAllDirections(
         currentHeight: Int,
         rowIndex: Int,
         columnIndex: Int,
         topographicMap: Grid,
-        currentRoute: List<Location>,
+        currentRoute: List<Position>,
     ) {
         findHikingPathsToReachablePeaks(
             currentHeight = getNextHeight(topographicMap, rowIndex + 1, columnIndex),

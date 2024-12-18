@@ -10,8 +10,8 @@ data class Grid(
     fun getOrNull(rowIndex: Int, columnIndex: Int) =
         lines.getOrNull(rowIndex)?.getOrNull(columnIndex)
 
-    fun getOrNull(location: Location) =
-        lines.getOrNull(location.row)?.getOrNull(location.column)
+    fun getOrNull(position: Position) =
+        lines.getOrNull(position.row)?.getOrNull(position.column)
 
     fun <R> mapIndexed(transform: (rowIndex: Int, columnIndex: Int, Char) -> R): List<List<R>> {
         var rowIndex = 0
@@ -26,10 +26,10 @@ data class Grid(
         }
     }
 
-    fun firstLocationOf(character: Char): Location? {
+    fun firstLocationOf(character: Char): Position? {
         lines.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { columnIndex, value ->
-                if (value == character) return Location(rowIndex, columnIndex)
+                if (value == character) return Position(rowIndex, columnIndex)
             }
         }
         return null
