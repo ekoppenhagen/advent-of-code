@@ -2,12 +2,16 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
+suspend fun main() {
+    Day4().solve()
+}
+
 class Day4 : AbstractAocDay(
     exampleResultPart1 = 13,
     exampleResultPart2 = 30,
 ) {
 
-    override fun solvePart1(scratchCards: List<String>) =
+    override suspend fun solvePart1(scratchCards: List<String>) =
         scratchCards.sumOf(::getPointsForScratchCards)
 
     private fun getPointsForScratchCards(scratchCard: String) =
@@ -32,7 +36,7 @@ class Day4 : AbstractAocDay(
         return if (points == 1) 0 else points / 2
     }
 
-    override fun solvePart2(scratchCards: List<String>) =
+    override suspend fun solvePart2(scratchCards: List<String>) =
         getTotalNumberOfScratchCards(scratchCards.reversed(), createCache())
 
     private fun createCache() = mutableMapOf<Int, Int>()

@@ -3,14 +3,18 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
+suspend fun main() {
+    Day11().solve()
+}
+
 class Day11 : AbstractAocDay(
     exampleResultPart1 = 55_312,
 ) {
 
-    override fun solvePart1(stoneEngravings: List<String>) =
+    override suspend fun solvePart1(stoneEngravings: List<String>) =
         getTotalNumberOfEvolvingStones(getInitialStoneEngravingNumbers(stoneEngravings, blinks = 25), createCache())
 
-    override fun solvePart2(stoneEngravings: List<String>) =
+    override suspend fun solvePart2(stoneEngravings: List<String>) =
         getTotalNumberOfEvolvingStones(getInitialStoneEngravingNumbers(stoneEngravings, blinks = 75), createCache())
 
     private fun getInitialStoneEngravingNumbers(stoneEngravings: List<String>, blinks: Int) =

@@ -1,11 +1,12 @@
 package io.github.ekoppenhagen.aoc
 
 import java.io.File
+import kotlin.reflect.KSuspendFunction1
 import kotlin.system.measureTimeMillis
 
 abstract class AbstractAocDay(
-    exampleResultPart1: Number? = null,
-    exampleResultPart2: Number? = null,
+    private val exampleResultPart1: Number? = null,
+    private val exampleResultPart2: Number? = null,
 ) {
 
     private val day = this.javaClass.simpleName.dropWhile { !it.isDigit() }.toInt()
@@ -19,15 +20,18 @@ abstract class AbstractAocDay(
         /_/  |_\__,_/ |___/\___/_/ /_/\__/   \____/_/     \____/\____/\__,_/\___/        
     """.trimIndent()
 
-    abstract fun solvePart1(lines: List<String>): Any
-
-    abstract fun solvePart2(lines: List<String>): Any
-
     init {
         printAdventOfCodeHeader()
+    }
+
+    suspend fun solve() {
         printCompletePart(1, this::solvePart1, exampleResultPart1)
         printCompletePart(2, this::solvePart2, exampleResultPart2)
     }
+
+    protected abstract suspend fun solvePart1(lines: List<String>): Any
+
+    protected abstract suspend fun solvePart2(lines: List<String>): Any
 
     private fun printAdventOfCodeHeader() {
         printEmptyLine()
@@ -48,7 +52,7 @@ abstract class AbstractAocDay(
         println("$dateText$fillingSpaces$urlText")
     }
 
-    private fun printCompletePart(partNumber: Int, solvingAlgorithm: (List<String>) -> Any, expectedExampleResult: Number?) {
+    private suspend fun printCompletePart(partNumber: Int, solvingAlgorithm: KSuspendFunction1<List<String>, Any>, expectedExampleResult: Number?) {
         printPart(partNumber)
         expectedExampleResult
             ?.also { printExampleAndPartSolution(partNumber, solvingAlgorithm, it) }
@@ -58,7 +62,7 @@ abstract class AbstractAocDay(
 
     private fun printPart(part: Int) = println("part $part")
 
-    private fun printExampleAndPartSolution(partNumber: Int, solvingAlgorithm: (List<String>) -> Any, expectedExampleResult: Number?) {
+    private suspend fun printExampleAndPartSolution(partNumber: Int, solvingAlgorithm: KSuspendFunction1<List<String>, Any>, expectedExampleResult: Number?) {
         solvingAlgorithm(readExampleFile(partNumber).lines()).also {
             printExampleSolution("$it ${validateResult(it, expectedExampleResult)}")
             printPartSolutionWithRuntime(solvingAlgorithm)
@@ -71,7 +75,7 @@ abstract class AbstractAocDay(
 
     private fun printExampleSolution(solution: Any) = println("- example:\t$solution")
 
-    private fun printPartSolutionWithRuntime(solvingAlgorithm: (List<String>) -> Any) =
+    private suspend fun printPartSolutionWithRuntime(solvingAlgorithm: KSuspendFunction1<List<String>, Any>) =
         measureTimeMillis {
             printPartSolution(solvingAlgorithm(readInputFile().lines()))
         }.also { println(" (${it}ms)") }

@@ -5,12 +5,16 @@ import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 import io.github.ekoppenhagen.aoc.extensions.rotateClockwise
 import kotlin.math.abs
 
+suspend fun main() {
+    Day1().solve()
+}
+
 class Day1 : AbstractAocDay(
     exampleResultPart1 = 11,
     exampleResultPart2 = 31,
 ) {
 
-    override fun solvePart1(lines: List<String>) =
+    override suspend fun solvePart1(lines: List<String>) =
         calculateTotalDistances(toSortedListOfLocationIds(lines))
 
     private fun toSortedListOfLocationIds(lines: List<String>) =
@@ -22,7 +26,7 @@ class Day1 : AbstractAocDay(
     private fun calculateTotalDistances(lists: MutableList<MutableList<Long>>) =
         lists[0].zip(lists[1]).sumOf { abs(it.first - it.second) }
 
-    override fun solvePart2(lines: List<String>) =
+    override suspend fun solvePart2(lines: List<String>) =
         calculateSimilarityScore(toListsOfLocationIds(lines))
 
     private fun calculateSimilarityScore(lists: MutableList<MutableList<Long>>) =

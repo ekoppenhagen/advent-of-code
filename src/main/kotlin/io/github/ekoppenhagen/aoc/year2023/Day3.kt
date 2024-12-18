@@ -4,12 +4,16 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Location
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbersWithIndex
 
+suspend fun main() {
+    Day3().solve()
+}
+
 class Day3 : AbstractAocDay(
     exampleResultPart1 = 4361,
     exampleResultPart2 = 467_835,
 ) {
 
-    override fun solvePart1(engineSchematic: List<String>) =
+    override suspend fun solvePart1(engineSchematic: List<String>) =
         getSumOfPartNumbers(engineSchematic)
 
     private fun getSumOfPartNumbers(engineSchematic: List<String>) =
@@ -46,7 +50,7 @@ class Day3 : AbstractAocDay(
                 it.column in (numberWithCoordinates.second.column - 1)..(numberWithCoordinates.second.column + "${numberWithCoordinates.first}".length)
         }
 
-    override fun solvePart2(lines: List<String>) =
+    override suspend fun solvePart2(lines: List<String>) =
         lines.mapIndexed { lineIndex, line -> getGearRatioSum(line, lineIndex, lines) }.sum()
 
     private fun getGearRatioSum(line: String, lineIndex: Int, lines: List<String>) =

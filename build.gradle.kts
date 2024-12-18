@@ -1,5 +1,5 @@
 group = "io.github.ekoppenhagen"
-version = "2024.13.3"
+version = "2024.13.4"
 
 repositories(RepositoryHandler::mavenCentral)
 kotlin { jvmToolchain(21) }
@@ -13,6 +13,9 @@ plugins {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    // https://mvnrepository.com/artifact/io.gitlab.arturbosch.detekt/detekt-formatting
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
 }
 

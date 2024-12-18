@@ -3,12 +3,16 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
+suspend fun main() {
+    Day2().solve()
+}
+
 class Day2 : AbstractAocDay(
     exampleResultPart1 = 2,
     exampleResultPart2 = 4,
 ) {
 
-    override fun solvePart1(rawData: List<String>) =
+    override suspend fun solvePart1(rawData: List<String>) =
         getNumberOfSafeReports(rawData, isProblemDampenerAvailable = false)
 
     private fun getNumberOfSafeReports(
@@ -35,6 +39,6 @@ class Day2 : AbstractAocDay(
     private fun areOrderAndDistancesValidForDescending(firstLevel: Long, secondLevel: Long) =
         firstLevel > secondLevel && firstLevel - secondLevel in 1L..3L
 
-    override fun solvePart2(rawData: List<String>) =
+    override suspend fun solvePart2(rawData: List<String>) =
         getNumberOfSafeReports(rawData, isProblemDampenerAvailable = true)
 }

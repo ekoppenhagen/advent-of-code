@@ -2,12 +2,16 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
+suspend fun main() {
+    Day2().solve()
+}
+
 class Day2 : AbstractAocDay(
     exampleResultPart1 = 8,
     exampleResultPart2 = 2286,
 ) {
 
-    override fun solvePart1(rawGames: List<String>) =
+    override suspend fun solvePart1(rawGames: List<String>) =
         getSumOfIdsOfPossibleGames(rawGames)
 
     private fun getSumOfIdsOfPossibleGames(rawGames: List<String>) =
@@ -50,7 +54,7 @@ class Day2 : AbstractAocDay(
     private fun createMapOfCubesInShowcase(showcase: List<String>) =
         showcase.associate { it.split(" ")[1] to it.split(" ")[0].toInt() }
 
-    override fun solvePart2(rawGames: List<String>) =
+    override suspend fun solvePart2(rawGames: List<String>) =
         getSumOfPowerOfGames(rawGames)
 
     private fun getSumOfPowerOfGames(rawGames: List<String>) =

@@ -2,12 +2,16 @@ package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
+suspend fun main() {
+    Day3().solve()
+}
+
 class Day3 : AbstractAocDay(
     exampleResultPart1 = 161,
     exampleResultPart2 = 48,
 ) {
 
-    override fun solvePart1(corruptedMemoryDump: List<String>) =
+    override suspend fun solvePart1(corruptedMemoryDump: List<String>) =
         calculateSumOfAllMultiplicationResults(corruptedMemoryDump)
 
     private fun calculateSumOfAllMultiplicationResults(corruptedMemoryDump: List<String>) =
@@ -30,7 +34,7 @@ class Day3 : AbstractAocDay(
             .split(",").map { it.toInt() }
             .zipWithNext().first()
 
-    override fun solvePart2(corruptedMemoryDump: List<String>) =
+    override suspend fun solvePart2(corruptedMemoryDump: List<String>) =
         calculateSumOfAllMultiplicationResultsWithConditionals(corruptedMemoryDump)
 
     private var isDisabled = false

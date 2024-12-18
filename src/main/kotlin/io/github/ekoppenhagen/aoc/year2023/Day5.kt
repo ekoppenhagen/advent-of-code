@@ -3,17 +3,21 @@ package io.github.ekoppenhagen.aoc.year2023
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
+suspend fun main() {
+    Day5().solve()
+}
+
 class Day5 : AbstractAocDay(
     exampleResultPart1 = 35,
     exampleResultPart2 = 46,
 ) {
 
-    override fun solvePart1(rawAlmanac: List<String>) =
+    override suspend fun solvePart1(rawAlmanac: List<String>) =
         Almanac(rawAlmanac).findLowestLocationNumber(getSeeds(rawAlmanac))
 
     private fun getSeeds(rawAlmanac: List<String>) = rawAlmanac.first().getAllNumbers()
 
-    override fun solvePart2(rawAlmanac: List<String>) =
+    override suspend fun solvePart2(rawAlmanac: List<String>) =
         Almanac(rawAlmanac).findMatchingSeed(getSeedsWithRanges(rawAlmanac))
 
     private fun getSeedsWithRanges(rawAlmanac: List<String>) =

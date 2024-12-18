@@ -3,19 +3,23 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
+suspend fun main() {
+    Day13().solve()
+}
+
 class Day13 : AbstractAocDay(
     exampleResultPart1 = 480,
 ) {
 
-    override fun solvePart1(clawMachineConfigurations: List<String>) =
+    override suspend fun solvePart1(clawMachineConfigurations: List<String>) =
         calculateMinimumNumberOfTokensToWinAllPossiblePrices(clawMachineConfigurations).sum()
 
     private fun calculateMinimumNumberOfTokensToWinAllPossiblePrices(
         clawMachineConfigurations: List<String>,
         priceOffset: Long = 0,
         ignoreButtonPressNumber: Boolean = false,
-    ) =
-        extractButtonBehaviorsAndPriceLocations(clawMachineConfigurations, priceOffset).map { getMinimumAmountOfTokensForPrice(it, ignoreButtonPressNumber) }
+    ) = extractButtonBehaviorsAndPriceLocations(clawMachineConfigurations, priceOffset)
+        .map { getMinimumAmountOfTokensForPrice(it, ignoreButtonPressNumber) }
 
     private fun extractButtonBehaviorsAndPriceLocations(clawMachineConfigurations: List<String>, priceOffset: Long) =
         mutableListOf<ClawMachineConfiguration>().apply {
@@ -108,7 +112,7 @@ class Day13 : AbstractAocDay(
         this?.let { first * PRESS_A_TOKEN_COST + second * PRESS_B_TOKEN_COST }
             ?: 0L
 
-    override fun solvePart2(clawMachineConfigurations: List<String>) =
+    override suspend fun solvePart2(clawMachineConfigurations: List<String>) =
         calculateMinimumNumberOfTokensToWinAllPossiblePrices(clawMachineConfigurations, 10_000_000_000_000, ignoreButtonPressNumber = true).sum()
 
     data class ClawMachineConfiguration(val buttonA: Pair<Long, Long>, val buttonB: Pair<Long, Long>, val price: Pair<Long, Long>)

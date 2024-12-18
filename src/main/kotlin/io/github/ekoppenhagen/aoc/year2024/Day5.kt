@@ -3,12 +3,16 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
 
+suspend fun main() {
+    Day5().solve()
+}
+
 class Day5 : AbstractAocDay(
     exampleResultPart1 = 143,
     exampleResultPart2 = 123,
 ) {
 
-    override fun solvePart1(pageOrderingRulesAndUpdates: List<String>) =
+    override suspend fun solvePart1(pageOrderingRulesAndUpdates: List<String>) =
         calculateSumOfAllValidUpdateMiddlePages(pageOrderingRulesAndUpdates)
 
     private fun calculateSumOfAllValidUpdateMiddlePages(pageOrderingRulesAndUpdates: List<String>) =
@@ -67,7 +71,7 @@ class Day5 : AbstractAocDay(
     private fun getMiddlePage(validUpdate: List<Long>) =
         validUpdate[validUpdate.size / 2]
 
-    override fun solvePart2(pageOrderingRulesAndUpdates: List<String>) =
+    override suspend fun solvePart2(pageOrderingRulesAndUpdates: List<String>) =
         calculateSumOfAllInvalidUpdateMiddlePages(pageOrderingRulesAndUpdates)
 
     private fun calculateSumOfAllInvalidUpdateMiddlePages(pageOrderingRulesAndUpdates: List<String>) =

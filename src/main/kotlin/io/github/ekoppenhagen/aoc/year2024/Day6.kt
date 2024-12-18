@@ -9,12 +9,16 @@ import io.github.ekoppenhagen.aoc.common.Direction.UP
 import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
 
+suspend fun main() {
+    Day6().solve()
+}
+
 class Day6 : AbstractAocDay(
     exampleResultPart1 = 41,
     exampleResultPart2 = 6,
 ) {
 
-    override fun solvePart1(labMap: List<String>) =
+    override suspend fun solvePart1(labMap: List<String>) =
         calculateNumberOfDistinctPositionsOfGuardRoute(Grid(labMap))
 
     private fun calculateNumberOfDistinctPositionsOfGuardRoute(labGridMap: Grid) =
@@ -51,6 +55,6 @@ class Day6 : AbstractAocDay(
     private fun isObstacle(location: Location, labGridMap: Grid) =
         labGridMap.getOrNull(location) == '#'
 
-    override fun solvePart2(labMap: List<String>) =
+    override suspend fun solvePart2(labMap: List<String>) =
         "not implemented"
 }

@@ -3,12 +3,16 @@ package io.github.ekoppenhagen.aoc.year2024
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Grid
 
+suspend fun main() {
+    Day4().solve()
+}
+
 class Day4 : AbstractAocDay(
     exampleResultPart1 = 18,
     exampleResultPart2 = 9,
 ) {
 
-    override fun solvePart1(wordSearch: List<String>) =
+    override suspend fun solvePart1(wordSearch: List<String>) =
         countAllAppearancesOfXmas(wordSearch)
 
     private fun countAllAppearancesOfXmas(wordSearch: List<String>) =
@@ -77,7 +81,7 @@ class Day4 : AbstractAocDay(
         wordSearch.getOrNull(rowIndex + 3, columnIndex - 3),
     ).joinToString("")
 
-    override fun solvePart2(wordSearch: List<String>) =
+    override suspend fun solvePart2(wordSearch: List<String>) =
         countAllAppearancesOfXmasCross(wordSearch)
 
     private fun countAllAppearancesOfXmasCross(wordSearch: List<String>) =

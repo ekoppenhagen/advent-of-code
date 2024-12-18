@@ -2,12 +2,16 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
+suspend fun main() {
+    Day7().solve()
+}
+
 class Day7 : AbstractAocDay(
     exampleResultPart1 = 6440,
     exampleResultPart2 = 5905,
 ) {
 
-    override fun solvePart1(rawHands: List<String>) =
+    override suspend fun solvePart1(rawHands: List<String>) =
         getCamelCardsWinnings(rawHands)
 
     private fun getCamelCardsWinnings(rawHands: List<String>) =
@@ -24,7 +28,7 @@ class Day7 : AbstractAocDay(
     private fun calculateWinningsOfHand(rankMinusOne: Int, bid: Int) =
         (rankMinusOne + 1) * bid
 
-    override fun solvePart2(rawHands: List<String>) =
+    override suspend fun solvePart2(rawHands: List<String>) =
         getCamelCardsWithJokersWinnings(rawHands)
 
     private fun getCamelCardsWithJokersWinnings(rawHands: List<String>) =

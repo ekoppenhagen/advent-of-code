@@ -4,12 +4,16 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
 
+suspend fun main() {
+    Day10().solve()
+}
+
 class Day10 : AbstractAocDay(
     exampleResultPart1 = 36,
     exampleResultPart2 = 81,
 ) {
 
-    override fun solvePart1(topographicMap: List<String>) =
+    override suspend fun solvePart1(topographicMap: List<String>) =
         calculateTrailheadScores(Grid(topographicMap)).flatten().sum()
 
     private fun calculateTrailheadScores(topographicMap: Grid) =
@@ -95,7 +99,7 @@ class Day10 : AbstractAocDay(
         )
     }
 
-    override fun solvePart2(topographicMap: List<String>) =
+    override suspend fun solvePart2(topographicMap: List<String>) =
         calculateNumberOfPathsForAllTrailheads(Grid(topographicMap)).flatten().sum()
 
     private fun calculateNumberOfPathsForAllTrailheads(topographicMap: Grid) =

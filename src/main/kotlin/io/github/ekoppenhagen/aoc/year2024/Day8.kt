@@ -4,12 +4,16 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Location
 
+suspend fun main() {
+    Day8().solve()
+}
+
 class Day8 : AbstractAocDay(
     exampleResultPart1 = 14,
     exampleResultPart2 = 34,
 ) {
 
-    override fun solvePart1(cityAntennaMap: List<String>) =
+    override suspend fun solvePart1(cityAntennaMap: List<String>) =
         findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap).size
 
     private fun findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap: List<String>) =
@@ -60,7 +64,7 @@ class Day8 : AbstractAocDay(
         0 <= location.row && location.row < cityAntennaMap.size &&
             0 <= location.column && location.column < cityAntennaMap.first().length
 
-    override fun solvePart2(cityAntennaMap: List<String>) =
+    override suspend fun solvePart2(cityAntennaMap: List<String>) =
         findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap).size
 
     private fun findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap: List<String>) =

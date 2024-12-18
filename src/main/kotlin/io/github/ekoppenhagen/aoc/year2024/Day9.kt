@@ -4,12 +4,16 @@ import io.github.ekoppenhagen.aoc.AbstractAocDay
 import io.github.ekoppenhagen.aoc.extensions.removeLastWhile
 import java.util.*
 
+suspend fun main() {
+    Day9().solve()
+}
+
 class Day9 : AbstractAocDay(
     exampleResultPart1 = 1928,
     exampleResultPart2 = 2858,
 ) {
 
-    override fun solvePart1(discMap: List<String>) =
+    override suspend fun solvePart1(discMap: List<String>) =
         calculateFilesystemChecksumOfRearrangedFiles(discMap.first())
 
     private fun calculateFilesystemChecksumOfRearrangedFiles(discMap: String) =
@@ -49,6 +53,6 @@ class Day9 : AbstractAocDay(
     private fun calculateFilesystemChecksum(rearrangedFiles: LinkedList<String>) =
         rearrangedFiles.mapIndexed { index, fileId -> index * fileId.toLong() }.sum()
 
-    override fun solvePart2(discMap: List<String>) =
+    override suspend fun solvePart2(discMap: List<String>) =
         "not implemented"
 }

@@ -2,12 +2,16 @@ package io.github.ekoppenhagen.aoc.year2023
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
 
+suspend fun main() {
+    Day6().solve()
+}
+
 class Day6 : AbstractAocDay(
     exampleResultPart1 = 288,
     exampleResultPart2 = 71_503,
 ) {
 
-    override fun solvePart1(lines: List<String>) =
+    override suspend fun solvePart1(lines: List<String>) =
         mapToRace(lines)
             .map(::calculateNumberOfWaysToBeatCurrentRecord)
             .reduce { product, factor -> product * factor }
@@ -36,7 +40,7 @@ class Day6 : AbstractAocDay(
         val distance: Long,
     )
 
-    override fun solvePart2(lines: List<String>) =
+    override suspend fun solvePart2(lines: List<String>) =
         calculateNumberOfWaysToBeatSingleRace(getRaceInformation(lines))
 
     private fun getRaceInformation(lines: List<String>) =
