@@ -26,7 +26,7 @@ data class Grid(
         }
     }
 
-    fun firstLocationOf(character: Char): Position? {
+    fun firstPositionOf(character: Char): Position? {
         lines.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { columnIndex, value ->
                 if (value == character) return Position(rowIndex, columnIndex)
@@ -46,5 +46,20 @@ data class Grid(
                 columnIndex = 0
             }
         }
+    }
+
+    fun replace(rowIndex: Int, columnIndex: Int, character: Char) =
+        Grid(
+            mutableListOf<String>().apply {
+                this.addAll(lines.take(rowIndex))
+                this.add(lines[rowIndex].substring(0, columnIndex) + character + lines[rowIndex].substring(columnIndex + 1))
+                this.addAll(lines.drop(rowIndex + 1))
+            }
+        )
+
+    fun print(): Grid {
+        println()
+        lines.forEach { println(it) }
+        return this
     }
 }

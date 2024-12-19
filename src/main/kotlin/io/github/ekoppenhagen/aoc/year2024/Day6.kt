@@ -8,6 +8,7 @@ import io.github.ekoppenhagen.aoc.common.Direction.RIGHT
 import io.github.ekoppenhagen.aoc.common.Direction.UP
 import io.github.ekoppenhagen.aoc.common.Grid
 import io.github.ekoppenhagen.aoc.common.Position
+import io.github.ekoppenhagen.aoc.common.filterParallel
 
 suspend fun main() {
     Day6().solve()
@@ -22,39 +23,85 @@ class Day6 : AbstractAocDay(
         calculateNumberOfDistinctPositionsOfGuardRoute(Grid(labMap))
 
     private fun calculateNumberOfDistinctPositionsOfGuardRoute(labGridMap: Grid) =
-        getAllPatrolTiles(labGridMap).size
+        getUniquePositions(getAllPatrolTilesWithDirection(labGridMap)).size
 
-    private fun getAllPatrolTiles(labGridMap: Grid) =
-        mutableSetOf(getStartingPositionOfGuard(labGridMap)).apply { runPatrol(labGridMap, this) }
+    private fun getUniquePositions(positionWithDirections: Collection<PositionWithDirection>) =
+        positionWithDirections.map { it.position }.toSet()
 
-    private fun runPatrol(labGridMap: Grid, patrolTiles: MutableSet<Position>) {
-        var currentGuardPosition = patrolTiles.first()
-        var guardDirection = UP
-        var nextGuardPosition = getNextPosition(currentGuardPosition, guardDirection)
-        while (isInsideLab(nextGuardPosition, labGridMap)) {
-            if (isObstacle(nextGuardPosition, labGridMap)) guardDirection = guardDirection.rotateClockwise()
-            else currentGuardPosition = getNextPosition(currentGuardPosition, guardDirection).also { patrolTiles.add(it) }
-            nextGuardPosition = getNextPosition(currentGuardPosition, guardDirection)
+    private fun getAllPatrolTilesWithDirection(labGridMap: Grid) =
+        mutableSetOf(getStartingPatrol(labGridMap))
+            .apply { walkPatrol(labGridMap, this) }
+
+    private fun getStartingPatrol(labGridMap: Grid) =
+        PositionWithDirection(getStartingPositionOfGuard(labGridMap), UP)
+
+    private fun getStartingPositionOfGuard(labGridMap: Grid) =
+        labGridMap.firstPositionOf('^') ?: Position(-1, -1)
+
+    private fun walkPatrol(labGridMap: Grid, patrolTiles: MutableSet<PositionWithDirection>): Boolean {
+        var currentGuardPatrol = patrolTiles.first()
+        var nextGuardPatrol = continuePatrol(currentGuardPatrol)
+
+        while (isInsideLab(nextGuardPatrol.position, labGridMap)) {
+            currentGuardPatrol = getNextGuardPatrol(currentGuardPatrol, nextGuardPatrol, labGridMap)
+            if (patrolTiles.contains(currentGuardPatrol)) return true
+            patrolTiles.add(currentGuardPatrol)
+            nextGuardPatrol = continuePatrol(currentGuardPatrol)
         }
+        return false // no loop
     }
 
-    private fun getStartingPositionOfGuard(labGridMap: Grid): Position =
-        labGridMap.firstLocationOf('^') ?: Position(-1, -1)
+    private fun continuePatrol(currentGuardPosition: PositionWithDirection) =
+        when (currentGuardPosition.direction) {
+            UP -> PositionWithDirection(Position(currentGuardPosition.position.row - 1, currentGuardPosition.position.column), UP)
+            RIGHT -> PositionWithDirection(Position(currentGuardPosition.position.row, currentGuardPosition.position.column + 1), RIGHT)
+            DOWN -> PositionWithDirection(Position(currentGuardPosition.position.row + 1, currentGuardPosition.position.column), DOWN)
+            LEFT -> PositionWithDirection(Position(currentGuardPosition.position.row, currentGuardPosition.position.column - 1), LEFT)
+        }
 
     private fun isInsideLab(position: Position, labGridMap: Grid) =
         position.row in 0 until labGridMap.rows && position.column in 0 until labGridMap.columns
 
-    private fun getNextPosition(currentGuardPosition: Position, direction: Direction) =
-        when (direction) {
-            UP -> Position(currentGuardPosition.row - 1, currentGuardPosition.column)
-            RIGHT -> Position(currentGuardPosition.row, currentGuardPosition.column + 1)
-            DOWN -> Position(currentGuardPosition.row + 1, currentGuardPosition.column)
-            LEFT -> Position(currentGuardPosition.row, currentGuardPosition.column - 1)
-        }
+    private fun getNextGuardPatrol(
+        currentGuardPatrol: PositionWithDirection,
+        nextGuardPatrol: PositionWithDirection,
+        labGridMap: Grid
+    ) =
+        if (isObstacle(nextGuardPatrol.position, labGridMap)) {
+            currentGuardPatrol.copy(direction = currentGuardPatrol.direction.rotateClockwise())
+        } else nextGuardPatrol
 
     private fun isObstacle(position: Position, labGridMap: Grid) =
-        labGridMap.getOrNull(position) == '#'
+        labGridMap.getOrNull(position).let {
+            it == '#' || it == 'O'
+        }
+
+    data class PositionWithDirection(val position: Position, val direction: Direction)
 
     override suspend fun solvePart2(labMap: List<String>) =
-        "not implemented"
+        calculateNumberOfUniquePositionsToCreateLoop(Grid(labMap))
+
+    private suspend fun calculateNumberOfUniquePositionsToCreateLoop(labGridMap: Grid) =
+        getUniquePositions(calculateNumberOfPositionsToCreateLoop(labGridMap)).size
+
+    private suspend fun calculateNumberOfPositionsToCreateLoop(labGridMap: Grid) =
+        getAllPatrolTilesWithDirection(labGridMap).let {
+            val startPosition = it.first().position
+            it.drop(1)
+                .filterParallel { isLoopPosition(it.position, labGridMap) }
+                .filterNot { it.position == startPosition }
+        }
+
+    private fun isLoopPosition(
+        obstaclePosition: Position,
+        labGridMap: Grid,
+    ) = walkPatrol(
+        createLapCopyWithNewObstacle(labGridMap, obstaclePosition),
+        mutableSetOf(getStartingPatrol(labGridMap)),
+    )
+
+    private fun createLapCopyWithNewObstacle(
+        labGridMap: Grid,
+        obstaclePosition: Position
+    ) = labGridMap.replace(obstaclePosition.row, obstaclePosition.column, 'O')
 }
