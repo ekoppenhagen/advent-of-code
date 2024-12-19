@@ -1,9 +1,9 @@
 package io.github.ekoppenhagen.aoc.year2024
 
 import io.github.ekoppenhagen.aoc.AbstractAocDay
+import io.github.ekoppenhagen.aoc.common.mapParallel
 import io.github.ekoppenhagen.aoc.extensions.concat
 import io.github.ekoppenhagen.aoc.extensions.getAllNumbers
-import io.github.ekoppenhagen.aoc.extensions.mapParallel
 
 suspend fun main() {
     Day7().solve()
