@@ -14,13 +14,13 @@ class Day8 : AbstractAocDay(
 ) {
 
     override suspend fun solvePart1(cityAntennaMap: List<String>) =
-        findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap).size
+        findAllUniqueAntinodeLocationsInsideMap(Grid(cityAntennaMap)).size
 
-    private fun findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap: List<String>) =
-        findAllUniqueAntinodeLocations(cityAntennaMap).filter { isInsideMap(it, cityAntennaMap) }
+    private fun findAllUniqueAntinodeLocationsInsideMap(cityAntennaMap: Grid) =
+        findAllUniqueAntinodeLocations(cityAntennaMap).filter { cityAntennaMap.isInside(it) }
 
-    private fun findAllUniqueAntinodeLocations(cityAntennaMap: List<String>) =
-        findAllAntennasForFrequencies(Grid(cityAntennaMap)).map(::calculateAllAntinodeLocations).flatten().toSet()
+    private fun findAllUniqueAntinodeLocations(cityAntennaMap: Grid) =
+        findAllAntennasForFrequencies(cityAntennaMap).map(::calculateAllAntinodeLocations).flatten().toSet()
 
     private fun findAllAntennasForFrequencies(cityAntennaMap: Grid) =
         mutableMapOf<Char, MutableList<Position>>().apply {
@@ -60,23 +60,19 @@ class Day8 : AbstractAocDay(
             remove(antennaPairs.second)
         }
 
-    fun isInsideMap(position: Position, cityAntennaMap: List<String>) =
-        0 <= position.row && position.row < cityAntennaMap.size &&
-            0 <= position.column && position.column < cityAntennaMap.first().length
-
     override suspend fun solvePart2(cityAntennaMap: List<String>) =
-        findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap).size
+        findAllUniqueAntinodeLocationsWithResonantHarmonics(Grid(cityAntennaMap)).size
 
-    private fun findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap: List<String>) =
-        findAllAntennasForFrequencies(Grid(cityAntennaMap))
+    private fun findAllUniqueAntinodeLocationsWithResonantHarmonics(cityAntennaMap: Grid) =
+        findAllAntennasForFrequencies(cityAntennaMap)
             .map { calculateAllAntinodeLocationsWithResonantHarmonics(it, cityAntennaMap) }
             .flatten()
             .toSet()
 
-    private fun calculateAllAntinodeLocationsWithResonantHarmonics(frequencyAntennas: Map.Entry<Char, List<Position>>, cityAntennaMap: List<String>) =
+    private fun calculateAllAntinodeLocationsWithResonantHarmonics(frequencyAntennas: Map.Entry<Char, List<Position>>, cityAntennaMap: Grid) =
         getAllAntennaCombinations(frequencyAntennas.value).map { calculateAntinodesOfAntennasWithResonantHarmonics(it, cityAntennaMap) }.flatten()
 
-    private fun calculateAntinodesOfAntennasWithResonantHarmonics(antennaPairs: Pair<Position, Position>, cityAntennaMap: List<String>) =
+    private fun calculateAntinodesOfAntennasWithResonantHarmonics(antennaPairs: Pair<Position, Position>, cityAntennaMap: Grid) =
         mutableListOf<Position>().apply {
             val rowDifference = antennaPairs.first.row - antennaPairs.second.row
             val columnDifference = antennaPairs.first.column - antennaPairs.second.column
@@ -87,15 +83,15 @@ class Day8 : AbstractAocDay(
         origin: Position,
         rowDifference: Int,
         columnDifference: Int,
-        cityAntennaMap: List<String>
+        cityAntennaMap: Grid,
     ) = mutableListOf<Position>().apply {
         var currentPosition = origin
-        while (isInsideMap(currentPosition, cityAntennaMap)) {
+        while (cityAntennaMap.isInside(currentPosition)) {
             add(currentPosition)
             currentPosition = Position(currentPosition.row + rowDifference, currentPosition.column + columnDifference)
         }
         currentPosition = origin
-        while (isInsideMap(currentPosition, cityAntennaMap)) {
+        while (cityAntennaMap.isInside(currentPosition)) {
             add(currentPosition)
             currentPosition = Position(currentPosition.row - rowDifference, currentPosition.column - columnDifference)
         }

@@ -7,11 +7,11 @@ data class Grid(
     val rows = lines.size
     val columns = lines.firstOrNull()?.length ?: 0
 
+    fun getOrNull(position: Position) =
+        getOrNull(rowIndex = position.row, columnIndex = position.column)
+
     fun getOrNull(rowIndex: Int, columnIndex: Int) =
         lines.getOrNull(rowIndex)?.getOrNull(columnIndex)
-
-    fun getOrNull(position: Position) =
-        lines.getOrNull(position.row)?.getOrNull(position.column)
 
     fun <R> mapIndexed(transform: (rowIndex: Int, columnIndex: Int, Char) -> R): List<List<R>> {
         var rowIndex = 0
@@ -48,6 +48,9 @@ data class Grid(
         }
     }
 
+    fun replace(position: Position, character: Char) =
+        replace(rowIndex = position.row, columnIndex = position.column, character = character)
+
     fun replace(rowIndex: Int, columnIndex: Int, character: Char) =
         Grid(
             mutableListOf<String>().apply {
@@ -57,9 +60,9 @@ data class Grid(
             }
         )
 
-    fun print(): Grid {
-        println()
-        lines.forEach { println(it) }
-        return this
-    }
+    fun isInside(position: Position) =
+        isInside(rowIndex = position.row, columnIndex = position.column)
+
+    fun isInside(rowIndex: Int, columnIndex: Int) =
+        getOrNull(rowIndex = rowIndex, columnIndex = columnIndex) != null
 }

@@ -60,7 +60,7 @@ class Day6 : AbstractAocDay(
         }
 
     private fun isInsideLab(position: Position, labGridMap: Grid) =
-        position.row in 0 until labGridMap.rows && position.column in 0 until labGridMap.columns
+        labGridMap.isInside(position)
 
     private fun getNextGuardPatrol(
         currentGuardPatrol: PositionWithDirection,
@@ -103,5 +103,5 @@ class Day6 : AbstractAocDay(
     private fun createLapCopyWithNewObstacle(
         labGridMap: Grid,
         obstaclePosition: Position
-    ) = labGridMap.replace(obstaclePosition.row, obstaclePosition.column, 'O')
+    ) = labGridMap.replace(obstaclePosition, 'O')
 }
