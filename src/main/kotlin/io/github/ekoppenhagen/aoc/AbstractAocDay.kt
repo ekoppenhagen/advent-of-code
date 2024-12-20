@@ -7,10 +7,14 @@ import kotlin.system.measureTimeMillis
 abstract class AbstractAocDay(
     private val exampleResultPart1: Number? = null,
     private val exampleResultPart2: Number? = null,
+    private val solveExamples: Boolean = true,
+    private val solveParts: Boolean = true,
 ) {
 
     private val day = this.javaClass.simpleName.dropWhile { !it.isDigit() }.toInt()
     private val year = this.javaClass.packageName.dropWhile { !it.isDigit() }.toInt()
+
+    private val disabled = "disabled"
 
     private val adventOfCode = """
             ___       __                 __           ____   ______          __   
@@ -63,10 +67,11 @@ abstract class AbstractAocDay(
     private fun printPart(part: Int) = println("part $part")
 
     private suspend fun printExampleAndPartSolution(partNumber: Int, solvingAlgorithm: KSuspendFunction1<List<String>, Any>, expectedExampleResult: Number?) {
-        solvingAlgorithm(readExampleFile(partNumber).lines()).also {
-            printExampleSolution("$it ${validateResult(it, expectedExampleResult)}")
-            printPartSolutionWithRuntime(solvingAlgorithm)
-        }
+        (if (solveExamples) solvingAlgorithm(readExampleFile(partNumber).lines()) else disabled)
+            .also {
+                printExampleSolution("$it ${validateResult(it, expectedExampleResult)}")
+                printPartSolutionWithRuntime(solvingAlgorithm)
+            }
     }
 
     private fun validateResult(actual: Any, expected: Number?) =
@@ -77,7 +82,10 @@ abstract class AbstractAocDay(
 
     private suspend fun printPartSolutionWithRuntime(solvingAlgorithm: KSuspendFunction1<List<String>, Any>) =
         measureTimeMillis {
-            printPartSolution(solvingAlgorithm(readInputFile().lines()))
+            printPartSolution(
+                if (!solveParts) disabled
+                else solvingAlgorithm(readInputFile().lines())
+            )
         }.also { println(" (${it}ms)") }
 
     private fun printPartSolution(solution: Any) = print("- problem:\t$solution")
