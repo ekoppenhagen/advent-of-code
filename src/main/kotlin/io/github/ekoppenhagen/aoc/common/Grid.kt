@@ -93,6 +93,19 @@ class Grid(
         floodFillRecursively(character, currentPosition.columnRight(), positions)
     }
 
+    fun findAllAreas(): List<List<Position>> {
+        val areas = mutableListOf<List<Position>>()
+        val visitedPositions = mutableSetOf<Position>()
+
+        this.forEachIndexed { rowIndex, columnIndex, character ->
+            if (visitedPositions.contains(Position(rowIndex, columnIndex))) return@forEachIndexed
+            val area = this.floodFill(rowIndex, columnIndex)
+            visitedPositions.addAll(area)
+            areas.add(area)
+        }
+        return areas
+    }
+
     fun isInside(position: Position) =
         isInside(rowIndex = position.row, columnIndex = position.column)
 
