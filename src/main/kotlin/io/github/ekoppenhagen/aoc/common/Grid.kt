@@ -87,10 +87,10 @@ class Grid(
         ) return
         positions.add(currentPosition)
 
-        floodFillRecursively(character, currentPosition.oneRowUp(), positions)
-        floodFillRecursively(character, currentPosition.oneRowDown(), positions)
-        floodFillRecursively(character, currentPosition.oneColumnLeft(), positions)
-        floodFillRecursively(character, currentPosition.oneColumnRight(), positions)
+        floodFillRecursively(character, currentPosition.rowUp(), positions)
+        floodFillRecursively(character, currentPosition.rowDown(), positions)
+        floodFillRecursively(character, currentPosition.columnLeft(), positions)
+        floodFillRecursively(character, currentPosition.columnRight(), positions)
     }
 
     fun isInside(position: Position) =

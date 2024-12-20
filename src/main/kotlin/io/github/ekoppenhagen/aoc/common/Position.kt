@@ -5,15 +5,27 @@ data class Position(
     val column: Int,
 ) {
 
-    fun oneRowUp() =
+    fun rowUp() =
         Position(row = row - 1, column = column)
 
-    fun oneRowDown() =
+    fun diagonalUpRight() =
+        Position(row = row - 1, column = column + 1)
+
+    fun columnRight() =
+        Position(row = row, column = column + 1)
+
+    fun diagonalDownRight() =
+        Position(row = row + 1, column = column + 1)
+
+    fun rowDown() =
         Position(row = row + 1, column = column)
 
-    fun oneColumnLeft() =
+    fun diagonalDownLeft() =
+        Position(row = row + 1, column = column - 1)
+
+    fun columnLeft() =
         Position(row = row, column = column - 1)
 
-    fun oneColumnRight() =
-        Position(row = row, column = column + 1)
+    fun diagonalUpLeft() =
+        Position(row = row - 1, column = column - 1)
 }

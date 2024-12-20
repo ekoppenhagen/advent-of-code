@@ -53,10 +53,10 @@ class Day6 : AbstractAocDay(
 
     private fun continuePatrol(currentGuardPosition: PositionWithDirection) =
         when (currentGuardPosition.direction) {
-            UP -> PositionWithDirection(currentGuardPosition.position.oneRowUp(), UP)
-            RIGHT -> PositionWithDirection(currentGuardPosition.position.oneColumnRight(), RIGHT)
-            DOWN -> PositionWithDirection(currentGuardPosition.position.oneRowDown(), DOWN)
-            LEFT -> PositionWithDirection(currentGuardPosition.position.oneColumnLeft(), LEFT)
+            UP -> PositionWithDirection(currentGuardPosition.position.rowUp(), UP)
+            RIGHT -> PositionWithDirection(currentGuardPosition.position.columnRight(), RIGHT)
+            DOWN -> PositionWithDirection(currentGuardPosition.position.rowDown(), DOWN)
+            LEFT -> PositionWithDirection(currentGuardPosition.position.columnLeft(), LEFT)
         }
 
     private fun isInsideLab(position: Position, labGridMap: Grid) =
