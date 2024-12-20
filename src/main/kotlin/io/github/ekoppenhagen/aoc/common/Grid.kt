@@ -1,6 +1,6 @@
 package io.github.ekoppenhagen.aoc.common
 
-data class Grid(
+class Grid(
     private val lines: List<String>
 ) {
 
@@ -48,10 +48,10 @@ data class Grid(
         }
     }
 
-    fun replace(position: Position, character: Char) =
-        replace(rowIndex = position.row, columnIndex = position.column, character = character)
+    fun copyAndReplace(position: Position, character: Char) =
+        copyAndReplace(rowIndex = position.row, columnIndex = position.column, character = character)
 
-    fun replace(rowIndex: Int, columnIndex: Int, character: Char) =
+    fun copyAndReplace(rowIndex: Int, columnIndex: Int, character: Char) =
         Grid(
             mutableListOf<String>().apply {
                 this.addAll(lines.take(rowIndex))
@@ -59,6 +59,39 @@ data class Grid(
                 this.addAll(lines.drop(rowIndex + 1))
             }
         )
+
+    fun floodFill(position: Position) =
+        mutableListOf<Position>().apply {
+            if (isInside(position = position)) {
+                floodFillRecursively(
+                    character = getOrNull(position = position)!!,
+                    currentPosition = position,
+                    positions = this,
+                )
+                this.sortWith(compareBy({ it.row }, { it.column }))
+            }
+        }
+
+    fun floodFill(rowIndex: Int, columnIndex: Int) =
+        floodFill(position = Position(row = rowIndex, column = columnIndex))
+
+    private fun floodFillRecursively(
+        character: Char,
+        currentPosition: Position,
+        positions: MutableList<Position>,
+    ) {
+        if (
+            positions.contains(currentPosition) ||
+            !isInside(position = currentPosition) ||
+            character != getOrNull(position = currentPosition)
+        ) return
+        positions.add(currentPosition)
+
+        floodFillRecursively(character, currentPosition.oneRowUp(), positions)
+        floodFillRecursively(character, currentPosition.oneRowDown(), positions)
+        floodFillRecursively(character, currentPosition.oneColumnLeft(), positions)
+        floodFillRecursively(character, currentPosition.oneColumnRight(), positions)
+    }
 
     fun isInside(position: Position) =
         isInside(rowIndex = position.row, columnIndex = position.column)
