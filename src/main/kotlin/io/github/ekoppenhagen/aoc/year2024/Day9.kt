@@ -70,9 +70,9 @@ class Day9 : AbstractAocDay(
 
     private class DiscMap(rawDiscMap: String) {
 
-        var blockMap: MutableList<Long?> = mutableListOf()
-        var files: MutableList<File> = mutableListOf()
-        var freeSpaces: MutableList<FreeSpace> = mutableListOf()
+        val blockMap: MutableList<Long?> = mutableListOf()
+        val files: MutableList<File> = mutableListOf()
+        val freeSpaces: MutableList<FreeSpace> = mutableListOf()
 
         init {
             var isFile = true

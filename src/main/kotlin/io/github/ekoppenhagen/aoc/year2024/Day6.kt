@@ -88,8 +88,8 @@ class Day6 : AbstractAocDay(
         getAllPatrolTilesWithDirection(labGridMap).let {
             val startPosition = it.first().position
             it.drop(1)
-                .filterParallel { isLoopPosition(it.position, labGridMap) }
-                .filterNot { it.position == startPosition }
+                .filterParallel { positionWithDirection -> isLoopPosition(positionWithDirection.position, labGridMap) }
+                .filterNot { positionWithDirection -> positionWithDirection.position == startPosition }
         }
 
     private fun isLoopPosition(
