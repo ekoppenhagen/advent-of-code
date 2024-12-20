@@ -14,12 +14,14 @@ fun String.toListOfDigitsWithSpelledOutNumbers() =
     stringHelpers.getAllNumbersIncludingSpelledOutOnes(this)
         .map { stringHelpers.toArabicNumeral(it) }
 
-fun String.getAllNumbers() =
-    Regex("(?<numbers>[0-9]+)").findAll(this)
+fun String.getAllNumbers(includeNegativeNumbers: Boolean = false) =
+    (if (includeNegativeNumbers) Regex("(-?\\d+)") else Regex("(\\d+)"))
+        .findAll(this)
         .mapNotNull { it.value.toLongOrNull() }
         .toList()
 
-fun String.getAllNumbersWithIndex() =
-    Regex("(?<numbers>[0-9]+)").findAll(this)
+fun String.getAllNumbersWithIndex(includeNegativeNumbers: Boolean = false) =
+    (if (includeNegativeNumbers) Regex("(-?\\d+)") else Regex("(\\d+)"))
+        .findAll(this)
         .map { it.value.toLong() to it.range.first }
         .toList()
