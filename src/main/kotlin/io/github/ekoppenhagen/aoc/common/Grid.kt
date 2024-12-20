@@ -60,11 +60,12 @@ class Grid(
             }
         )
 
-    fun floodFill(position: Position) =
+    fun floodFill(position: Position, ignoredCharacter: Char? = null) =
         mutableListOf<Position>().apply {
             if (isInside(position = position)) {
                 floodFillRecursively(
                     character = getOrNull(position = position)!!,
+                    ignoredCharacter = ignoredCharacter,
                     currentPosition = position,
                     positions = this,
                 )
@@ -72,34 +73,36 @@ class Grid(
             }
         }
 
-    fun floodFill(rowIndex: Int, columnIndex: Int) =
-        floodFill(position = Position(row = rowIndex, column = columnIndex))
+    fun floodFill(rowIndex: Int, columnIndex: Int, ignoredCharacter: Char? = null) =
+        floodFill(position = Position(row = rowIndex, column = columnIndex), ignoredCharacter)
 
     private fun floodFillRecursively(
         character: Char,
+        ignoredCharacter: Char?,
         currentPosition: Position,
         positions: MutableList<Position>,
     ) {
         if (
+            character == ignoredCharacter ||
             positions.contains(currentPosition) ||
             !isInside(position = currentPosition) ||
             character != getOrNull(position = currentPosition)
         ) return
         positions.add(currentPosition)
 
-        floodFillRecursively(character, currentPosition.rowUp(), positions)
-        floodFillRecursively(character, currentPosition.rowDown(), positions)
-        floodFillRecursively(character, currentPosition.columnLeft(), positions)
-        floodFillRecursively(character, currentPosition.columnRight(), positions)
+        floodFillRecursively(character, ignoredCharacter, currentPosition.rowUp(), positions)
+        floodFillRecursively(character, ignoredCharacter, currentPosition.rowDown(), positions)
+        floodFillRecursively(character, ignoredCharacter, currentPosition.columnLeft(), positions)
+        floodFillRecursively(character, ignoredCharacter, currentPosition.columnRight(), positions)
     }
 
-    fun findAllAreas(): List<List<Position>> {
+    fun findAllAreas(ignoredCharacter: Char? = null): List<List<Position>> {
         val areas = mutableListOf<List<Position>>()
         val visitedPositions = mutableSetOf<Position>()
 
         this.forEachIndexed { rowIndex, columnIndex, character ->
             if (visitedPositions.contains(Position(rowIndex, columnIndex))) return@forEachIndexed
-            val area = this.floodFill(rowIndex, columnIndex)
+            val area = this.floodFill(rowIndex, columnIndex, ignoredCharacter)
             visitedPositions.addAll(area)
             areas.add(area)
         }
@@ -111,4 +114,6 @@ class Grid(
 
     fun isInside(rowIndex: Int, columnIndex: Int) =
         getOrNull(rowIndex = rowIndex, columnIndex = columnIndex) != null
+
+    fun print() = lines.forEach { println(it) }
 }
