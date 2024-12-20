@@ -70,8 +70,6 @@ formatting:
 
 # https://detekt.dev/docs/rules/naming/
 naming:
-  BooleanPropertyNaming:
-    active: true
   LambdaParameterNaming:
     active: true
     parameterPattern: '^[a-z]+[A-Za-z0-9]{2,}|_'
