@@ -53,10 +53,10 @@ class Day6 : AbstractAocDay(
 
     private fun continuePatrol(currentGuardPosition: PositionWithDirection) =
         when (currentGuardPosition.direction) {
-            UP -> PositionWithDirection(Position(currentGuardPosition.position.row - 1, currentGuardPosition.position.column), UP)
-            RIGHT -> PositionWithDirection(Position(currentGuardPosition.position.row, currentGuardPosition.position.column + 1), RIGHT)
-            DOWN -> PositionWithDirection(Position(currentGuardPosition.position.row + 1, currentGuardPosition.position.column), DOWN)
-            LEFT -> PositionWithDirection(Position(currentGuardPosition.position.row, currentGuardPosition.position.column - 1), LEFT)
+            UP -> PositionWithDirection(currentGuardPosition.position.oneRowUp(), UP)
+            RIGHT -> PositionWithDirection(currentGuardPosition.position.oneColumnRight(), RIGHT)
+            DOWN -> PositionWithDirection(currentGuardPosition.position.oneRowDown(), DOWN)
+            LEFT -> PositionWithDirection(currentGuardPosition.position.oneColumnLeft(), LEFT)
         }
 
     private fun isInsideLab(position: Position, labGridMap: Grid) =
@@ -103,5 +103,5 @@ class Day6 : AbstractAocDay(
     private fun createLapCopyWithNewObstacle(
         labGridMap: Grid,
         obstaclePosition: Position
-    ) = labGridMap.replace(obstaclePosition, 'O')
+    ) = labGridMap.copyAndReplace(obstaclePosition, 'O')
 }
